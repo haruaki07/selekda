@@ -1,9 +1,22 @@
-class Editor {
-  /** @type {HTMLCanvasElement} */
-  canvas;
-  /** @type {HTMLDivElement} */
-  container;
+// class Object {
+//   constructor(x, y) {}
+// }
 
+// class Brush extends Object {
+//   constructor(x, y) {
+//     super(x, y);
+//   }
+// }
+
+// class Image extends Object {
+//   constructor(x, y) {
+//     super(x, y);
+//   }
+// }
+
+// class Layer {}
+
+class Editor {
   constructor(width, height) {
     this.container = document.querySelector(".workspace__editor");
     this.width = width;
@@ -20,6 +33,7 @@ class Editor {
     canvas.width = this.width;
     canvas.height = this.height;
     this.canvas = canvas;
+    this.ctx = this.canvas.getContext("2d");
 
     // make sure the canvas is visible, not overflowing the container
     if (
@@ -37,6 +51,50 @@ class Editor {
     }
 
     this.container.append(this.canvas);
+
+    this.canvas.addEventListener("mousedown", this.handleMouseDown);
+    this.canvas.addEventListener("mousemove", this.handleMouseMove);
+    this.canvas.addEventListener("mouseup", this.handleMouseUp);
+  }
+
+  /** @param {MouseEvent} e */
+  handleMouseDown = (e) => {
+    let { x, y } = this.getMousePos(e);
+
+    if (this.activeTool === "brush") {
+      this.ctx.lineWidth = 5;
+      this.ctx.lineJoin = "round";
+      this.ctx.lineCap = "round";
+      this.ctx.strokeStyle = "blue";
+      this.ctx.beginPath();
+      this.ctx.moveTo(x, y);
+      this.pressing = true;
+    }
+  };
+
+  /** @param {MouseEvent} e */
+  handleMouseMove = (e) => {
+    let { x, y } = this.getMousePos(e);
+
+    if (this.activeTool === "brush" && this.pressing) {
+      this.ctx.lineTo(x, y);
+      this.ctx.stroke();
+    }
+  };
+
+  /** @param {MouseEvent} e */
+  handleMouseUp = (e) => {
+    if (this.activeTool === "brush" && this.pressing) {
+      this.pressing = false;
+    }
+  };
+
+  /** @param {MouseEvent} e */
+  getMousePos(e) {
+    let rect = this.canvas.getBoundingClientRect();
+    let x = e.clientX - rect.left;
+    let y = e.clientY - rect.top;
+    return { x, y };
   }
 
   setZoom(zoom) {
@@ -58,6 +116,16 @@ class Editor {
   initButtons() {
     document.getElementById("zoomout").onclick = this.handleZoomOut;
     document.getElementById("zoomin").onclick = this.handleZoomIn;
+
+    // tools
+    document.getElementById("select").onclick = this.handleSelectSelect;
+    document.getElementById("brush").onclick = this.handleBrushSelect;
+    document.getElementById("bucket").onclick = this.handleBucketSelect;
+    document.getElementById("eraser").onclick = this.handleEraserSelect;
+    document.getElementById("text").onclick = this.handleTextSelect;
+    document.getElementById("stamp").onclick = this.handleStampSelect;
+    document.getElementById("picker").onclick = this.handlePickerSelect;
+    document.getElementById("shape").onclick = this.handleShapeSelect;
   }
 
   handleZoomOut = () => {
@@ -67,6 +135,52 @@ class Editor {
   handleZoomIn = () => {
     this.setZoom(Math.min(1.5, this.zoom + 0.05));
   };
+
+  handleSelectSelect = () => {
+    this.setActiveTool("select");
+  };
+
+  handleBrushSelect = () => {
+    this.setActiveTool("brush");
+  };
+
+  handleBucketSelect = () => {
+    this.setActiveTool("bucket");
+  };
+
+  handleEraserSelect = () => {
+    this.setActiveTool("eraser");
+  };
+
+  handleTextSelect = () => {
+    this.setActiveTool("text");
+  };
+
+  handleStampSelect = () => {
+    this.setActiveTool("stamp");
+  };
+
+  handlePickerSelect = () => {
+    this.setActiveTool("picker");
+  };
+
+  handleShapeSelect = () => {
+    this.setActiveTool("shape");
+  };
+
+  setActiveTool(tool) {
+    this.activeTool = tool;
+
+    // remove active state on dom
+    document
+      .querySelector(".workspace__toolbar-item--active")
+      ?.classList.remove("workspace__toolbar-item--active");
+
+    // set active state on dom
+    document
+      .getElementById(tool)
+      .classList.add("workspace__toolbar-item--active");
+  }
 }
 
 let editor = new Editor(1024, 600);
