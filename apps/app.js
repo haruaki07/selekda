@@ -69,6 +69,52 @@ class BrushTool extends Tool {
 class EraserTool extends BrushTool {
   constructor(ctx, dctx) {
     super(ctx, dctx, 5, "white", "round", 100);
+    this.name = "eraser";
+  }
+}
+
+class PickerTool extends Tool {
+  constructor(ctx, dctx) {
+    super("picker");
+    /** @type {CanvasRenderingContext2D} */
+    this.ctx = ctx;
+    /** @type {CanvasRenderingContext2D} */
+    this.dctx = dctx;
+    this.rgba = { r: 255, g: 255, b: 255, a: 1 };
+  }
+
+  drawPreview(x, y) {
+    let imageData = this.ctx.getImageData(x, y, 1, 1);
+    let data = imageData.data;
+    this.rgba = { r: data[0], g: data[1], b: data[2], a: data[3] };
+
+    this.dctx.clearRect(0, 0, this.dctx.canvas.width, this.dctx.canvas.height);
+
+    let radius = 100 / 2;
+
+    // pick
+    this.dctx.strokeStyle = this.getColor();
+    this.dctx.lineWidth = 10;
+    this.dctx.beginPath();
+    this.dctx.arc(x, y, radius, 0, Math.PI * 2, false);
+    this.dctx.stroke();
+    this.dctx.closePath();
+
+    // border
+    this.dctx.strokeStyle = "gray";
+    this.dctx.lineWidth = 10;
+    this.dctx.beginPath();
+    this.dctx.arc(x, y, radius + 10, 0, Math.PI * 2, false);
+    this.dctx.stroke();
+    this.dctx.closePath();
+  }
+
+  getColor() {
+    return rgbToHex(this.rgba.r, this.rgba.g, this.rgba.b);
+  }
+
+  clearPreview() {
+    this.dctx.clearRect(0, 0, this.dctx.canvas.width, this.dctx.canvas.height);
   }
 }
 
@@ -87,6 +133,11 @@ class Editor {
   initTools() {
     this.initBrushTool();
     this.initEraserTool();
+    this.initPickerTool();
+  }
+
+  initPickerTool() {
+    this.pickerTool = new PickerTool(this.ctx, this.dctx);
   }
 
   initBrushTool() {
@@ -147,7 +198,9 @@ class Editor {
     canvas.width = this.width;
     canvas.height = this.height;
     this.canvas = canvas;
-    this.ctx = this.canvas.getContext("2d");
+    this.ctx = this.canvas.getContext("2d", { willReadFrequently: true });
+    this.ctx.fillStyle = "white";
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
     let draftCanvas = document.createElement("canvas");
     draftCanvas.style =
@@ -183,12 +236,12 @@ class Editor {
   handleMouseDown = (e) => {
     let { x, y } = this.getMousePos(e);
 
+    this.pressing = true;
+
     if (this.activeTool === "brush") {
       this.brushTool.beginDraw(x, y);
-      this.pressing = true;
     } else if (this.activeTool === "eraser") {
       this.eraserTool.beginDraw(x, y);
-      this.pressing = true;
     }
   };
 
@@ -196,15 +249,22 @@ class Editor {
   handleMouseMove = (e) => {
     let { x, y } = this.getMousePos(e);
 
-    if (this.pressing) {
-      switch (this.activeTool) {
-        case "brush":
+    switch (this.activeTool) {
+      case "brush":
+        if (this.pressing) {
           this.brushTool.draw(x, y);
-          break;
-        case "eraser":
+        }
+        break;
+      case "eraser":
+        if (this.pressing) {
           this.brushTool.draw(x, y);
-          break;
-      }
+        }
+        break;
+      case "picker":
+        if (this.pressing) {
+          this.pickerTool.drawPreview(x, y);
+        }
+        break;
     }
   };
 
@@ -216,7 +276,14 @@ class Editor {
           this.brushTool.endDraw();
           break;
         case "eraser":
-          this.brushTool.endDraw();
+          this.eraserTool.endDraw();
+          break;
+        case "picker":
+          let color = this.pickerTool.getColor();
+          this.pickerTool.clearPreview();
+          navigator.clipboard
+            .writeText(color)
+            .then(() => alert(`${color} copied to clipboard!`));
           break;
       }
 
@@ -334,6 +401,18 @@ class Editor {
       .getElementById(tool + "Props")
       ?.style.setProperty("display", "flex");
   }
+}
+
+function rgbToHex(r, g, b) {
+  r = Math.max(0, Math.min(255, Math.round(r)));
+  g = Math.max(0, Math.min(255, Math.round(g)));
+  b = Math.max(0, Math.min(255, Math.round(b)));
+
+  const hexR = r.toString(16).padStart(2, "0");
+  const hexG = g.toString(16).padStart(2, "0");
+  const hexB = b.toString(16).padStart(2, "0");
+
+  return `#${hexR}${hexG}${hexB}`;
 }
 
 let editor = new Editor(1024, 600);
