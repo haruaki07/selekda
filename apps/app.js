@@ -66,6 +66,12 @@ class BrushTool extends Tool {
   }
 }
 
+class EraserTool extends BrushTool {
+  constructor(ctx, dctx) {
+    super(ctx, dctx, 5, "white", "round", 100);
+  }
+}
+
 class Editor {
   constructor(width, height) {
     this.container = document.querySelector(".workspace__editor");
@@ -80,6 +86,7 @@ class Editor {
 
   initTools() {
     this.initBrushTool();
+    this.initEraserTool();
   }
 
   initBrushTool() {
@@ -120,6 +127,18 @@ class Editor {
           this.brushTool.shape = e.currentTarget.value;
         });
       });
+  }
+
+  initEraserTool() {
+    this.eraserTool = new EraserTool(this.ctx, this.dctx);
+    // size props dom
+    document.getElementById("eraserSize").value = this.eraserTool.size;
+    document.getElementById("eraserSizeText").innerText = this.eraserTool.size;
+    document.getElementById("eraserSize").addEventListener("input", (e) => {
+      let value = e.currentTarget.value;
+      this.eraserTool.size = value;
+      document.getElementById("eraserSizeText").innerText = value;
+    });
   }
 
   initCanvas() {
@@ -167,6 +186,9 @@ class Editor {
     if (this.activeTool === "brush") {
       this.brushTool.beginDraw(x, y);
       this.pressing = true;
+    } else if (this.activeTool === "eraser") {
+      this.eraserTool.beginDraw(x, y);
+      this.pressing = true;
     }
   };
 
@@ -174,15 +196,30 @@ class Editor {
   handleMouseMove = (e) => {
     let { x, y } = this.getMousePos(e);
 
-    if (this.activeTool === "brush" && this.pressing) {
-      this.brushTool.draw(x, y);
+    if (this.pressing) {
+      switch (this.activeTool) {
+        case "brush":
+          this.brushTool.draw(x, y);
+          break;
+        case "eraser":
+          this.brushTool.draw(x, y);
+          break;
+      }
     }
   };
 
   /** @param {MouseEvent} e */
   handleMouseUp = (e) => {
-    if (this.activeTool === "brush" && this.pressing) {
-      this.brushTool.endDraw();
+    if (this.pressing) {
+      switch (this.activeTool) {
+        case "brush":
+          this.brushTool.endDraw();
+          break;
+        case "eraser":
+          this.brushTool.endDraw();
+          break;
+      }
+
       this.pressing = false;
     }
   };

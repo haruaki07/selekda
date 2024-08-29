@@ -48,6 +48,7 @@
         </div>
 
         <div class="workspace__content">
+          <!-- brush tool props -->
           <div
             class="workspace__tool-props"
             id="brushProps"
@@ -109,6 +110,21 @@
                   square
                 </label>
               </div>
+            </div>
+          </div>
+
+          <!-- eraser tool props -->
+          <div
+            class="workspace__tool-props"
+            id="eraserProps"
+            style="display: none !important"
+          >
+            <div class="workspace__tool-prop">
+              <label>
+                size:
+                <input type="range" min="1" max="100" id="eraserSize" />
+                <span id="eraserSizeText"></span>
+              </label>
             </div>
           </div>
 
