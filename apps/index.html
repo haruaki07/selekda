@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DSGN</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <div class="workspace">
+    <div class="workspace__topbar">
+      <div class="workspace__topbar-items">
+        <button class="workspace__topbar-item" id="new">New</button>
+        <button class="workspace__topbar-item" id="save">Save</button>
+        <button class="workspace__topbar-item" id="undo">Undo</button>
+        <button class="workspace__topbar-item" id="redo">Redo</button>
+        <button class="workspace__topbar-item" id="copy">Copy</button>
+        <button class="workspace__topbar-item" id="paste">Paste</button>
+        <button class="workspace__topbar-item" id="import" title="Import an image">Import</button>
+        <button class="workspace__topbar-item" id="export" title="Export image to jpg">Export</button>
+      </div>
+    </div>
+
+    <div class="workspace__main">
+      <div class="workspace__toolbar">
+        <div class="workspace__toolbar-items">
+          <button class="workspace__toolbar-item workspace__toolbar-item--active" id="select">select</button>
+          <button class="workspace__toolbar-item" id="move">move</button>
+          <button class="workspace__toolbar-item" id="brush">brush</button>
+          <button class="workspace__toolbar-item" id="bucket">bucket</button>
+          <button class="workspace__toolbar-item" id="eraser">eraser</button>
+          <button class="workspace__toolbar-item" id="text">text</button>
+          <button class="workspace__toolbar-item" id="stamp">stamp</button>
+          <button class="workspace__toolbar-item" id="picker">picker</button>
+          <button class="workspace__toolbar-item" id="shape">shape</button>
+        </div>
+      </div>
+
+      <div class="workspace__content">
+        <div class="workspace__editor"></div>
+        <div class="workspace__content-statusbar">
+          <div>size: <span id="statusSize"></span></div>
+          <div>
+            zoom: 
+            <button class="workspace__zoom" title="Zoom Out" id="zoomout">-</button>
+            <span id="statusZoom"></span>
+            <button class="workspace__zoom" title="Zoom In" id="zoomin">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="workspace__panel">
+        <div class="workspace__panel-layers">
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
