@@ -117,7 +117,7 @@ class PickerTool extends Tool {
     return rgbToHex(this.rgba.r, this.rgba.g, this.rgba.b);
   }
 
-  clearPreview() {
+  endDraw() {
     this.dctx.clearRect(0, 0, this.dctx.canvas.width, this.dctx.canvas.height);
   }
 }
@@ -448,11 +448,14 @@ class Editor {
           this.eraserTool.endDraw();
           break;
         case "picker":
+          this.pickerTool.endDraw();
           let color = this.pickerTool.getColor();
-          this.pickerTool.clearPreview();
-          navigator.clipboard
-            .writeText(color)
-            .then(() => alert(`${color} copied to clipboard!`));
+
+          // set color for all tools
+          this.brushTool.color = color;
+          document.getElementById("brushColor").value = color;
+          this.shapeTool.color = color;
+          document.getElementById("shapeColor").value = color;
           break;
         case "shape":
           this.shapeTool.endDraw();
@@ -461,10 +464,13 @@ class Editor {
 
       this.pressing = false;
 
+      // handle history
       this.history.push(
         this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
       );
+      // max is 5
       if (this.history.length > 6) this.history.shift();
+      // if there is redo history while the history is updated, reset the redo history
       if (this.redoHistory.length > 0) this.redoHistory.clear();
     }
   };
