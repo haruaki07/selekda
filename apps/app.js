@@ -63,6 +63,7 @@ class BrushTool extends Tool {
     this.ctx.drawImage(draftCanvas, 0, 0);
     this.dctx.clearRect(0, 0, draftCanvas.width, draftCanvas.height);
     this.ctx.globalAlpha = 1;
+    this.dctx.canvas.style.setProperty("opacity", 1);
   }
 }
 
@@ -119,6 +120,70 @@ class PickerTool extends Tool {
   }
 }
 
+class ShapeTool extends Tool {
+  constructor(ctx, dctx, shape = "rectangle", color = "black", opacity = 1) {
+    super("shape");
+    /** @type {CanvasRenderingContext2D} */
+    this.ctx = ctx;
+    /** @type {CanvasRenderingContext2D} */
+    this.dctx = dctx;
+    this.shape = shape;
+    this.color = color;
+    this.opacity = opacity;
+  }
+
+  beginDraw(x, y) {
+    this.start = { x, y };
+  }
+
+  drawPreview(x, y) {
+    this.dctx.clearRect(0, 0, this.dctx.canvas.width, this.dctx.canvas.height);
+    this.dctx.canvas.style.setProperty("opacity", this.opacity);
+
+    if (this.shape === "rectangle") {
+      this.dctx.fillStyle = this.color;
+      this.dctx.fillRect(
+        this.start.x,
+        this.start.y,
+        x - this.start.x,
+        y - this.start.y
+      );
+    } else if (this.shape === "line") {
+      this.dctx.strokeStyle = this.color;
+      this.dctx.beginPath();
+      this.dctx.moveTo(this.start.x, this.start.y);
+      this.dctx.lineTo(x, y);
+      this.dctx.stroke();
+    } else if (this.shape === "square") {
+      let w = Math.min(x - this.start.x, y - this.start.y);
+      this.dctx.fillStyle = this.color;
+      this.dctx.fillRect(this.start.x, this.start.y, w, w);
+    } else if (this.shape === "circle") {
+      this.dctx.fillStyle = this.color;
+      this.dctx.beginPath();
+      this.dctx.arc(
+        this.start.x,
+        this.start.y,
+        Math.abs(x - this.start.x),
+        0,
+        Math.PI * 2
+      );
+      this.dctx.fill();
+      this.dctx.closePath();
+    }
+  }
+
+  endDraw() {
+    let draftCanvas = this.dctx.canvas;
+    this.ctx.globalAlpha = this.opacity;
+    this.ctx.drawImage(draftCanvas, 0, 0);
+    this.dctx.clearRect(0, 0, draftCanvas.width, draftCanvas.height);
+    this.ctx.globalAlpha = 1;
+    this.dctx.canvas.style.setProperty("opacity", 1);
+    this.start = null;
+  }
+}
+
 class Editor {
   constructor(width, height) {
     this.container = document.querySelector(".workspace__editor");
@@ -135,6 +200,40 @@ class Editor {
     this.initBrushTool();
     this.initEraserTool();
     this.initPickerTool();
+    this.initShapeTool();
+  }
+
+  initShapeTool() {
+    this.shapeTool = new ShapeTool(this.ctx, this.dctx);
+
+    // color props dom
+    document.getElementById("shapeColor").value = this.shapeTool.color;
+    document.getElementById("shapeColor").addEventListener("change", (e) => {
+      this.shapeTool.color = e.currentTarget.value;
+    });
+
+    // opacity props dom
+    document.getElementById("shapeOpacity").value =
+      this.shapeTool.opacity * 100;
+    document.getElementById("shapeOpacityText").innerText =
+      this.shapeTool.opacity * 100;
+    document.getElementById("shapeOpacity").addEventListener("input", (e) => {
+      let value = e.currentTarget.value;
+      this.shapeTool.opacity = value / 100;
+      document.getElementById("shapeOpacityText").innerText = value;
+    });
+
+    // shape props dom
+    document.querySelector(
+      `input[type=radio][name="shape-shape"][value="${this.shapeTool.shape}"]`
+    ).checked = true;
+    document
+      .querySelectorAll(`input[type=radio][name="shape-shape"]`)
+      .forEach((el) => {
+        el.addEventListener("change", (e) => {
+          this.shapeTool.shape = e.currentTarget.value;
+        });
+      });
   }
 
   initPickerTool() {
@@ -158,7 +257,7 @@ class Editor {
       this.brushTool.color = e.currentTarget.value;
     });
 
-    // size props dom
+    // opacity props dom
     document.getElementById("brushOpacity").value = this.brushTool.opacity;
     document.getElementById("brushOpacityText").innerText =
       this.brushTool.opacity;
@@ -243,6 +342,8 @@ class Editor {
       this.brushTool.beginDraw(x, y);
     } else if (this.activeTool === "eraser") {
       this.eraserTool.beginDraw(x, y);
+    } else if (this.activeTool === "shape") {
+      this.shapeTool.beginDraw(x, y);
     }
   };
 
@@ -266,6 +367,11 @@ class Editor {
           this.pickerTool.drawPreview(x, y);
         }
         break;
+      case "shape":
+        if (this.pressing) {
+          this.shapeTool.drawPreview(x, y);
+        }
+        break;
     }
   };
 
@@ -285,6 +391,9 @@ class Editor {
           navigator.clipboard
             .writeText(color)
             .then(() => alert(`${color} copied to clipboard!`));
+          break;
+        case "shape":
+          this.shapeTool.endDraw();
           break;
       }
 

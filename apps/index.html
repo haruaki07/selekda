@@ -128,6 +128,92 @@
             </div>
           </div>
 
+          <!-- shape tool props -->
+          <div
+            class="workspace__tool-props"
+            id="shapeProps"
+            style="display: none !important"
+          >
+            <div class="workspace__tool-prop">
+              <label>
+                color:
+                <input type="color" name="shape-color" id="shapeColor" />
+              </label>
+            </div>
+
+            <div class="workspace__tool-prop">
+              <label>
+                opacity:
+                <input type="range" min="1" max="100" id="shapeOpacity" />
+                <span id="shapeOpacityText"></span>
+              </label>
+            </div>
+
+            <div class="workspace__tool-prop">
+              <span>shape: </span>
+              <div>
+                <input
+                  id="shapeShapeCircle"
+                  type="radio"
+                  name="shape-shape"
+                  value="circle"
+                  class="workspace__prop-radio-input"
+                />
+                <label
+                  class="workspace__prop-radio-label"
+                  for="shapeShapeCircle"
+                >
+                  circle
+                </label>
+              </div>
+
+              <div>
+                <input
+                  id="shapeShapeSquare"
+                  type="radio"
+                  name="shape-shape"
+                  value="square"
+                  class="workspace__prop-radio-input"
+                />
+                <label
+                  class="workspace__prop-radio-label"
+                  for="shapeShapeSquare"
+                >
+                  square
+                </label>
+              </div>
+
+              <div>
+                <input
+                  id="shapeShapeRectangle"
+                  type="radio"
+                  name="shape-shape"
+                  value="rectangle"
+                  class="workspace__prop-radio-input"
+                />
+                <label
+                  class="workspace__prop-radio-label"
+                  for="shapeShapeRectangle"
+                >
+                  rectangle
+                </label>
+              </div>
+
+              <div>
+                <input
+                  id="shapeShapeLine"
+                  type="radio"
+                  name="shape-shape"
+                  value="line"
+                  class="workspace__prop-radio-input"
+                />
+                <label class="workspace__prop-radio-label" for="shapeShapeLine">
+                  line
+                </label>
+              </div>
+            </div>
+          </div>
+
           <div class="workspace__editor"></div>
           <div class="workspace__content-statusbar">
             <div>size: <span id="statusSize"></span></div>
