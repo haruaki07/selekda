@@ -92,8 +92,14 @@ class Editor {
   /** @param {MouseEvent} e */
   getMousePos(e) {
     let rect = this.canvas.getBoundingClientRect();
-    let x = e.clientX - rect.left;
-    let y = e.clientY - rect.top;
+
+    // get the scale factor
+    const scaleX = this.canvas.width / rect.width;
+    const scaleY = this.canvas.height / rect.height;
+
+    let x = (e.clientX - rect.left) * scaleX;
+    let y = (e.clientY - rect.top) * scaleY;
+
     return { x, y };
   }
 
