@@ -715,10 +715,10 @@ function rgbToHex(r, g, b) {
 document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     document.querySelector(".splash").style.opacity = "0";
-    // setTimeout(() => {
-    document.querySelector(".splash").remove();
-    // }, 250);
-  }, 0);
+    setTimeout(() => {
+      document.querySelector(".splash").remove();
+    }, 250);
+  }, 1000);
 });
 
 let width, height, editor;
