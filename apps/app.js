@@ -262,7 +262,7 @@ class Editor {
     document.getElementById("zoomin").onclick = this.handleZoomIn;
 
     // tools
-    document.getElementById("select").onclick = this.handleSelectSelect;
+    document.getElementById("move").onclick = this.handleMoveSelect;
     document.getElementById("brush").onclick = this.handleBrushSelect;
     document.getElementById("bucket").onclick = this.handleBucketSelect;
     document.getElementById("eraser").onclick = this.handleEraserSelect;
@@ -280,8 +280,8 @@ class Editor {
     this.setZoom(Math.min(1.5, this.zoom + 0.05));
   };
 
-  handleSelectSelect = () => {
-    this.setActiveTool("select");
+  handleMoveSelect = () => {
+    this.setActiveTool("move");
   };
 
   handleBrushSelect = () => {
