@@ -273,6 +273,7 @@ class Editor {
     this.initButtons();
     this.initTools();
     this.resizeCanvas();
+    this.initShortcuts();
   }
 
   initHistory() {
@@ -557,6 +558,16 @@ class Editor {
     document.getElementById("statusZoom").innerText = `${Math.round(
       this.zoom * 100
     )}%`;
+  }
+
+  initShortcuts() {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "z" && e.ctrlKey) {
+        this.handleUndo();
+      } else if (e.key === "y" && e.ctrlKey) {
+        this.handleRedo();
+      }
+    });
   }
 
   initButtons() {
