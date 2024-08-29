@@ -186,6 +186,38 @@ class ShapeTool extends Tool {
   }
 }
 
+class ImportTool extends Tool {
+  constructor(ctx, dctx) {
+    super("shape");
+    /** @type {CanvasRenderingContext2D} */
+    this.ctx = ctx;
+    /** @type {CanvasRenderingContext2D} */
+    this.dctx = dctx;
+  }
+
+  beginDraw(x, y) {
+    this.start = { x, y };
+  }
+
+  drawPreview(x, y) {
+    this.dctx.clearRect(0, 0, this.dctx.canvas.width, this.dctx.canvas.height);
+
+    let ratio = this.img.width / this.img.height;
+    let w = x - this.start.x;
+    let h = w / ratio;
+
+    this.dctx.drawImage(this.img, this.start.x, this.start.y, w, h);
+  }
+
+  endDraw() {
+    let draftCanvas = this.dctx.canvas;
+    this.ctx.drawImage(draftCanvas, 0, 0);
+    this.dctx.clearRect(0, 0, draftCanvas.width, draftCanvas.height);
+    this.start = null;
+    this.img = null;
+  }
+}
+
 class Stack {
   constructor(cb) {
     this.stack = [];
@@ -264,6 +296,11 @@ class Editor {
     this.initEraserTool();
     this.initPickerTool();
     this.initShapeTool();
+    this.initImportTool();
+  }
+
+  initImportTool() {
+    this.importTool = new ImportTool(this.ctx, this.dctx);
   }
 
   initShapeTool() {
@@ -409,6 +446,8 @@ class Editor {
       this.eraserTool.beginDraw(x, y);
     } else if (this.activeTool === "shape") {
       this.shapeTool.beginDraw(x, y);
+    } else if (this.activeTool === "import") {
+      this.importTool.beginDraw(x, y);
     }
   };
 
@@ -437,6 +476,11 @@ class Editor {
           this.shapeTool.drawPreview(x, y);
         }
         break;
+      case "import":
+        if (this.pressing) {
+          this.importTool.drawPreview(x, y);
+        }
+        break;
     }
   };
 
@@ -462,6 +506,10 @@ class Editor {
           break;
         case "shape":
           this.shapeTool.endDraw();
+          break;
+        case "import":
+          this.importTool.endDraw();
+          this.activeTool = this.lastActiveTool;
           break;
       }
 
@@ -525,10 +573,25 @@ class Editor {
     document.getElementById("picker").onclick = this.handlePickerSelect;
     document.getElementById("shape").onclick = this.handleShapeSelect;
 
+    document
+      .querySelector("#import > input")
+      .addEventListener("change", this.handleImport);
     document.getElementById("export").onclick = this.exportJpg;
     document.getElementById("undo").onclick = this.handleUndo;
     document.getElementById("redo").onclick = this.handleRedo;
   }
+
+  handleImport = (e) => {
+    let file = e.currentTarget.files[0];
+    if (!file) return;
+
+    this.lastActiveTool = this.activeTool;
+    this.activeTool = "import";
+
+    let img = new Image();
+    img.src = URL.createObjectURL(file);
+    this.importTool.img = img;
+  };
 
   handleUndo = (e) => {
     let last = this.history.get(-2);
