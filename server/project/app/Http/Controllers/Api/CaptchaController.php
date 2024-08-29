@@ -21,10 +21,6 @@ class CaptchaController extends Controller
 
     public function verify(Request $request)
     {
-        $request->validate([
-            "_captcha" => "required|string"
-        ]);
-
         $captchaString = $this->captchaService->retrieveCaptcha($request);
         $this->captchaService->verify($captchaString);
 
