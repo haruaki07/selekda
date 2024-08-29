@@ -5,21 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DSGN</title>
     <link rel="stylesheet" href="app.css" />
+    <link rel="shortcut icon" href="images/favicon.png" type="image/png" />
   </head>
   <body>
+    <div class="splash">
+      <div class="splash__content">
+        <img src="images/logo.png" alt="DSGN" width="128" />
+      </div>
+    </div>
+
     <div class="workspace">
       <div class="workspace__topbar">
         <div class="workspace__topbar-items">
           <button class="workspace__topbar-item" id="new">New</button>
-          <button class="workspace__topbar-item" id="save">Save</button>
+          <!-- <button class="workspace__topbar-item" id="save">Save</button> -->
           <button class="workspace__topbar-item" id="undo">
             <span id="undoCount"></span> Undo
           </button>
           <button class="workspace__topbar-item" id="redo">
             <span id="redoCount"></span> Redo
           </button>
-          <button class="workspace__topbar-item" id="copy">Copy</button>
-          <button class="workspace__topbar-item" id="paste">Paste</button>
+          <!-- <button class="workspace__topbar-item" id="copy">Copy</button>
+          <button class="workspace__topbar-item" id="paste">Paste</button> -->
           <label
             class="workspace__topbar-item"
             id="import"
@@ -50,6 +57,8 @@
             <button class="workspace__toolbar-item" id="picker">picker</button>
             <button class="workspace__toolbar-item" id="shape">shape</button>
           </div>
+
+          <img src="images/logo.png" alt="DSGN" width="48" />
         </div>
 
         <div class="workspace__content">

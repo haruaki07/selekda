@@ -714,3 +714,12 @@ function rgbToHex(r, g, b) {
 
 let editor = new Editor(1024, 600);
 editor.setActiveTool("brush");
+
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    document.querySelector(".splash").style.opacity = "0";
+    setTimeout(() => {
+      document.querySelector(".splash").remove();
+    }, 250);
+  }, 1000);
+});
