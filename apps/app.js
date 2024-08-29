@@ -88,6 +88,7 @@ class PickerTool extends Tool {
     let data = imageData.data;
     this.rgba = { r: data[0], g: data[1], b: data[2], a: data[3] };
 
+    this.dctx.canvas.style.setProperty("opacity", 1);
     this.dctx.clearRect(0, 0, this.dctx.canvas.width, this.dctx.canvas.height);
 
     let radius = 100 / 2;
