@@ -31,6 +31,7 @@ body {
 }
 
 .workspace {
+  position: relative;
   width: 1280px;
   height: 600px;
   display: flex;
@@ -213,6 +214,78 @@ body {
 }
 
 .splash__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.workspace__dialog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300;
+  height: 300;
+  z-index: 900;
+  background-color: var(--color-ijo);
+  padding: 1rem;
+  border-radius: var(--radius);
+}
+
+.workspace__dialog-input-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-krim);
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.workspace__dialog-input-sizes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.workspace__dialog-input-sizes input {
+  width: 100px;
+}
+
+.workspace__dialog-input {
+  background: var(--color-ijo-dark);
+  color: var(--color-krim);
+  border-radius: var(--radius);
+  border: var(--color-ijo-dark) 1px solid;
+  outline: none !important;
+  padding: 4px 6px;
+  font-size: 14px;
+}
+
+.workspace__dialog-input:focus {
+  border-color: var(--color-soklat);
+}
+
+.workspace__dialog button {
+  font-size: 14px;
+  background: none;
+  border: none;
+  color: var(--color-krim);
+  padding: 4px 6px;
+  cursor: pointer;
+  border-radius: var(--radius);
+  display: block;
+}
+
+.workspace__dialog button:hover {
+  background-color: var(--color-ijo-dark);
+}
+
+.workspace__dialog button:active {
+  background-color: var(--color-soklat);
+}
+
+.workspace__dialog-input-buttons {
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -15,6 +15,46 @@
     </div>
 
     <div class="workspace">
+      <div class="workspace__dialog" id="newDialog">
+        <div class="workspace__dialog-input-group">
+          <label> Name </label>
+          <input
+            type="text"
+            class="workspace__dialog-input"
+            id="newName"
+            autofocus
+          />
+        </div>
+
+        <div class="workspace__dialog-input-sizes">
+          <div class="workspace__dialog-input-group">
+            <label> Width </label>
+            <input
+              type="text"
+              class="workspace__dialog-input"
+              name="width"
+              id="newWidth"
+              value="1024"
+            />
+          </div>
+
+          <div class="workspace__dialog-input-group">
+            <label> Height </label>
+            <input
+              type="text"
+              class="workspace__dialog-input"
+              name="name"
+              value="600"
+              id="newHeight"
+            />
+          </div>
+        </div>
+        <div class="workspace__dialog-input-buttons">
+          <button id="createNew">create new</button>
+          <button id="cancelCreate">cancel</button>
+        </div>
+      </div>
+
       <div class="workspace__topbar">
         <div class="workspace__topbar-items">
           <button class="workspace__topbar-item" id="new">New</button>

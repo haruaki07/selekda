@@ -27,7 +27,7 @@ class BrushTool extends Tool {
     ctx,
     dctx,
     size = 5,
-    color = "black",
+    color = "#000000",
     shape = "round",
     opacity = 100
   ) {
@@ -123,7 +123,7 @@ class PickerTool extends Tool {
 }
 
 class ShapeTool extends Tool {
-  constructor(ctx, dctx, shape = "rectangle", color = "black", opacity = 1) {
+  constructor(ctx, dctx, shape = "rectangle", color = "#000000", opacity = 1) {
     super("shape");
     /** @type {CanvasRenderingContext2D} */
     this.ctx = ctx;
@@ -712,14 +712,48 @@ function rgbToHex(r, g, b) {
   return `#${hexR}${hexG}${hexB}`;
 }
 
-let editor = new Editor(1024, 600);
-editor.setActiveTool("brush");
-
 document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     document.querySelector(".splash").style.opacity = "0";
-    setTimeout(() => {
-      document.querySelector(".splash").remove();
-    }, 250);
-  }, 1000);
+    // setTimeout(() => {
+    document.querySelector(".splash").remove();
+    // }, 250);
+  }, 0);
+});
+
+let width, height, editor;
+
+document.getElementById("createNew").addEventListener("click", (e) => {
+  let w = document.getElementById("newWidth").value;
+  let h = document.getElementById("newHeight").value;
+  if (w <= 0 || h <= 0) {
+    alert("Invalid workspace size!");
+    return;
+  }
+
+  let name = document.getElementById("newName").value;
+  if (name.trim().replace(/\s\S/g, "").length <= 0) {
+    alert("Name cannot be empty!");
+    return;
+  }
+
+  if (editor) {
+    let ok = confirm("Are you sure? this action cannot undone.");
+    if (!ok) return;
+  }
+
+  width = w;
+  height = h;
+
+  editor = new Editor(width, height);
+  editor.setActiveTool("brush");
+  document.getElementById("newDialog").style.display = "none";
+});
+
+document.getElementById("cancelCreate").addEventListener("click", (e) => {
+  document.getElementById("newDialog").style.display = "none";
+});
+
+document.getElementById("new").addEventListener("click", (e) => {
+  document.getElementById("newDialog").style.display = "block";
 });
