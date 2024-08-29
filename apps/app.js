@@ -300,3 +300,4 @@ class Editor {
 }
 
 let editor = new Editor(1024, 600);
+editor.setActiveTool("brush");
