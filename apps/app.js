@@ -16,6 +16,56 @@
 
 // class Layer {}
 
+class Tool {
+  constructor(name) {
+    this.name = name;
+  }
+}
+
+class BrushTool extends Tool {
+  constructor(
+    ctx,
+    dctx,
+    size = 5,
+    color = "black",
+    shape = "round",
+    opacity = 100
+  ) {
+    super("brush");
+    /** @type {CanvasRenderingContext2D} */
+    this.ctx = ctx;
+    /** @type {CanvasRenderingContext2D} */
+    this.dctx = dctx;
+    this.size = size;
+    this.color = color;
+    this.shape = shape;
+    this.opacity = opacity;
+  }
+
+  beginDraw(x, y) {
+    this.dctx.lineWidth = this.size;
+    this.dctx.lineJoin = "round";
+    this.dctx.lineCap = this.shape === "round" ? "round" : "square";
+    this.dctx.strokeStyle = this.color;
+    this.dctx.canvas.style.setProperty("opacity", this.opacity / 100);
+    this.dctx.beginPath();
+    this.dctx.moveTo(x, y);
+  }
+
+  draw(x, y) {
+    this.dctx.lineTo(x, y);
+    this.dctx.stroke();
+  }
+
+  endDraw() {
+    let draftCanvas = this.dctx.canvas;
+    this.ctx.globalAlpha = this.opacity / 100;
+    this.ctx.drawImage(draftCanvas, 0, 0);
+    this.dctx.clearRect(0, 0, draftCanvas.width, draftCanvas.height);
+    this.ctx.globalAlpha = 1;
+  }
+}
+
 class Editor {
   constructor(width, height) {
     this.container = document.querySelector(".workspace__editor");
@@ -25,6 +75,51 @@ class Editor {
     this.initCanvas();
     this.updateStatusBar();
     this.initButtons();
+    this.initTools();
+  }
+
+  initTools() {
+    this.initBrushTool();
+  }
+
+  initBrushTool() {
+    this.brushTool = new BrushTool(this.ctx, this.dctx);
+    // size props dom
+    document.getElementById("brushSize").value = this.brushTool.size;
+    document.getElementById("brushSizeText").innerText = this.brushTool.size;
+    document.getElementById("brushSize").addEventListener("input", (e) => {
+      let value = e.currentTarget.value;
+      this.brushTool.size = value;
+      document.getElementById("brushSizeText").innerText = value;
+    });
+
+    // color props dom
+    document.getElementById("brushColor").value = this.brushTool.color;
+    document.getElementById("brushColor").addEventListener("change", (e) => {
+      this.brushTool.color = e.currentTarget.value;
+    });
+
+    // size props dom
+    document.getElementById("brushOpacity").value = this.brushTool.opacity;
+    document.getElementById("brushOpacityText").innerText =
+      this.brushTool.opacity;
+    document.getElementById("brushOpacity").addEventListener("input", (e) => {
+      let value = e.currentTarget.value;
+      this.brushTool.opacity = value;
+      document.getElementById("brushOpacityText").innerText = value;
+    });
+
+    // shape props dom
+    document.querySelector(
+      `input[type=radio][name="brush-shape"][value="${this.brushTool.shape}"]`
+    ).checked = true;
+    document
+      .querySelectorAll(`input[type=radio][name="brush-shape"]`)
+      .forEach((el) => {
+        el.addEventListener("change", (e) => {
+          this.brushTool.shape = e.currentTarget.value;
+        });
+      });
   }
 
   initCanvas() {
@@ -34,6 +129,14 @@ class Editor {
     canvas.height = this.height;
     this.canvas = canvas;
     this.ctx = this.canvas.getContext("2d");
+
+    let draftCanvas = document.createElement("canvas");
+    draftCanvas.style =
+      "position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)";
+    draftCanvas.width = this.width;
+    draftCanvas.height = this.height;
+    this.draftCanvas = draftCanvas;
+    this.dctx = this.draftCanvas.getContext("2d");
 
     // make sure the canvas is visible, not overflowing the container
     if (
@@ -50,11 +153,11 @@ class Editor {
       this.setZoom(zoom);
     }
 
-    this.container.append(this.canvas);
+    this.container.append(this.canvas, this.draftCanvas);
 
-    this.canvas.addEventListener("mousedown", this.handleMouseDown);
-    this.canvas.addEventListener("mousemove", this.handleMouseMove);
-    this.canvas.addEventListener("mouseup", this.handleMouseUp);
+    this.draftCanvas.addEventListener("mousedown", this.handleMouseDown);
+    this.draftCanvas.addEventListener("mousemove", this.handleMouseMove);
+    this.draftCanvas.addEventListener("mouseup", this.handleMouseUp);
   }
 
   /** @param {MouseEvent} e */
@@ -62,12 +165,7 @@ class Editor {
     let { x, y } = this.getMousePos(e);
 
     if (this.activeTool === "brush") {
-      this.ctx.lineWidth = 5;
-      this.ctx.lineJoin = "round";
-      this.ctx.lineCap = "round";
-      this.ctx.strokeStyle = "blue";
-      this.ctx.beginPath();
-      this.ctx.moveTo(x, y);
+      this.brushTool.beginDraw(x, y);
       this.pressing = true;
     }
   };
@@ -77,14 +175,14 @@ class Editor {
     let { x, y } = this.getMousePos(e);
 
     if (this.activeTool === "brush" && this.pressing) {
-      this.ctx.lineTo(x, y);
-      this.ctx.stroke();
+      this.brushTool.draw(x, y);
     }
   };
 
   /** @param {MouseEvent} e */
   handleMouseUp = (e) => {
     if (this.activeTool === "brush" && this.pressing) {
+      this.brushTool.endDraw();
       this.pressing = false;
     }
   };
@@ -107,6 +205,9 @@ class Editor {
     this.zoom = zoom;
     this.canvas.style.transform = `scale(${this.zoom}) translate(-50%, -50%)`;
     this.canvas.style.transformOrigin = `top left`;
+
+    this.draftCanvas.style.transform = `scale(${this.zoom}) translate(-50%, -50%)`;
+    this.draftCanvas.style.transformOrigin = `top left`;
     this.updateStatusBar();
   }
 
@@ -175,17 +276,26 @@ class Editor {
   };
 
   setActiveTool(tool) {
-    this.activeTool = tool;
+    document
+      .getElementById(this.activeTool + "Props")
+      ?.style.setProperty("display", "none");
 
     // remove active state on dom
     document
       .querySelector(".workspace__toolbar-item--active")
       ?.classList.remove("workspace__toolbar-item--active");
 
+    this.activeTool = tool;
+
     // set active state on dom
     document
       .getElementById(tool)
       .classList.add("workspace__toolbar-item--active");
+
+    // show tool props
+    document
+      .getElementById(tool + "Props")
+      ?.style.setProperty("display", "flex");
   }
 }
 
