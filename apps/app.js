@@ -50,6 +50,8 @@ class BrushTool extends Tool {
     this.dctx.canvas.style.setProperty("opacity", this.opacity / 100);
     this.dctx.beginPath();
     this.dctx.moveTo(x, y);
+    this.dctx.lineTo(x, y);
+    this.dctx.stroke();
   }
 
   draw(x, y) {
@@ -184,6 +186,42 @@ class ShapeTool extends Tool {
   }
 }
 
+class Stack {
+  constructor(cb) {
+    this.stack = [];
+    this.length = 0;
+    this._cb = cb;
+    this._cb();
+  }
+
+  push(items) {
+    this.stack.push(items);
+    this._cb(this.stack.length);
+    this.length++;
+  }
+
+  get(i) {
+    if (i < 0) {
+      return this.stack[this.stack.length + i];
+    }
+
+    return this.stack[i];
+  }
+
+  pop() {
+    let el = this.stack.pop();
+    this._cb(this.stack.length);
+    this.length--;
+    return el;
+  }
+
+  clear() {
+    this.stack = [];
+    this.length = 0;
+    this._cb(this.stack.length);
+  }
+}
+
 class Editor {
   constructor(width, height) {
     this.container = document.querySelector(".workspace__editor");
@@ -191,9 +229,21 @@ class Editor {
     this.height = height;
     this.zoom = 1;
     this.initCanvas();
+    this.initHistory();
     this.updateStatusBar();
     this.initButtons();
     this.initTools();
+  }
+
+  initHistory() {
+    this.history = new Stack(
+      (c) =>
+        (document.getElementById("undoCount").innerText = c > 0 ? `(${c})` : "")
+    );
+    this.redoHistory = new Stack(
+      (c) =>
+        (document.getElementById("redoCount").innerText = c > 0 ? `(${c})` : "")
+    );
   }
 
   initTools() {
@@ -398,6 +448,13 @@ class Editor {
       }
 
       this.pressing = false;
+
+      this.history.push(
+        this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
+      );
+      if (this.redoHistory.length > 0) {
+        this.redoHistory.clear();
+      }
     }
   };
 
@@ -449,7 +506,35 @@ class Editor {
     document.getElementById("shape").onclick = this.handleShapeSelect;
 
     document.getElementById("export").onclick = this.exportJpg;
+    document.getElementById("undo").onclick = this.handleUndo;
+    document.getElementById("redo").onclick = this.handleRedo;
   }
+
+  handleUndo = (e) => {
+    let last = this.history.get(-2);
+
+    if (last) {
+      this.ctx.putImageData(last, 0, 0);
+      this.redoHistory.push(this.history.pop());
+    } else {
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      if (this.history.length > 0) {
+        this.redoHistory.push(this.history.get(-1));
+      }
+      this.history.clear();
+    }
+  };
+
+  handleRedo = (e) => {
+    let data = this.redoHistory.pop();
+
+    if (data) {
+      this.ctx.putImageData(data, 0, 0);
+      this.history.push(data);
+    } else {
+      this.redoHistory.clear();
+    }
+  };
 
   exportJpg = (e) => {
     let link = document.createElement("a");
