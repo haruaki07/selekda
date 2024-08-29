@@ -215,6 +215,13 @@ class Stack {
     return el;
   }
 
+  shift() {
+    let el = this.stack.shift();
+    this._cb(this.stack.length);
+    this.length--;
+    return el;
+  }
+
   clear() {
     this.stack = [];
     this.length = 0;
@@ -238,8 +245,13 @@ class Editor {
   initHistory() {
     this.history = new Stack(
       (c) =>
-        (document.getElementById("undoCount").innerText = c > 0 ? `(${c})` : "")
+        (document.getElementById("undoCount").innerText =
+          c > 1 ? `(${c - 1})` : "")
     );
+    this.history.push(
+      this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
+    );
+
     this.redoHistory = new Stack(
       (c) =>
         (document.getElementById("redoCount").innerText = c > 0 ? `(${c})` : "")
@@ -452,9 +464,8 @@ class Editor {
       this.history.push(
         this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
       );
-      if (this.redoHistory.length > 0) {
-        this.redoHistory.clear();
-      }
+      if (this.history.length > 6) this.history.shift();
+      if (this.redoHistory.length > 0) this.redoHistory.clear();
     }
   };
 
@@ -517,11 +528,10 @@ class Editor {
       this.ctx.putImageData(last, 0, 0);
       this.redoHistory.push(this.history.pop());
     } else {
-      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      if (this.history.length > 0) {
+      this.ctx.putImageData(this.history.get(-1), 0, 0);
+      if (this.history.length > 1) {
         this.redoHistory.push(this.history.get(-1));
       }
-      this.history.clear();
     }
   };
 
