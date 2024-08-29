@@ -20,6 +20,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'date_of_birth',
+        'phone_number',
+        'profile_picture',
+        'role'
     ];
 
     /**
@@ -43,5 +47,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function blogs()
+    {
+        return $this->hasMany(Blog::class);
     }
 }
