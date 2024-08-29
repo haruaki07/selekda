@@ -240,6 +240,7 @@ class Editor {
     this.updateStatusBar();
     this.initButtons();
     this.initTools();
+    this.resizeCanvas();
   }
 
   initHistory() {
@@ -372,7 +373,15 @@ class Editor {
     this.draftCanvas = draftCanvas;
     this.dctx = this.draftCanvas.getContext("2d");
 
-    // make sure the canvas is visible, not overflowing the container
+    this.container.append(this.canvas, this.draftCanvas);
+
+    this.draftCanvas.addEventListener("mousedown", this.handleMouseDown);
+    this.draftCanvas.addEventListener("mousemove", this.handleMouseMove);
+    this.draftCanvas.addEventListener("mouseup", this.handleMouseUp);
+  }
+
+  // make sure the canvas is visible, not overflowing the container
+  resizeCanvas() {
     if (
       this.width > this.container.clientWidth ||
       this.height > this.container.clientHeight
@@ -380,18 +389,12 @@ class Editor {
       let zoom =
         Math.round(
           Math.min(
-            (this.container.clientWidth - 40) / canvas.width,
-            (this.container.clientHeight - 40) / canvas.height
+            (this.container.clientWidth - 40) / this.canvas.width,
+            (this.container.clientHeight - 40) / this.canvas.height
           ) / 0.05
         ) * 0.05;
       this.setZoom(zoom);
     }
-
-    this.container.append(this.canvas, this.draftCanvas);
-
-    this.draftCanvas.addEventListener("mousedown", this.handleMouseDown);
-    this.draftCanvas.addEventListener("mousemove", this.handleMouseMove);
-    this.draftCanvas.addEventListener("mouseup", this.handleMouseUp);
   }
 
   /** @param {MouseEvent} e */
