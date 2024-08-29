@@ -338,7 +338,16 @@ class Editor {
     document.getElementById("stamp").onclick = this.handleStampSelect;
     document.getElementById("picker").onclick = this.handlePickerSelect;
     document.getElementById("shape").onclick = this.handleShapeSelect;
+
+    document.getElementById("export").onclick = this.exportJpg;
   }
+
+  exportJpg = (e) => {
+    let link = document.createElement("a");
+    link.download = "output.jpg";
+    link.href = this.canvas.toDataURL();
+    link.click();
+  };
 
   handleZoomOut = () => {
     this.setZoom(Math.max(0.05, this.zoom - 0.05));
