@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('comments', function (Blueprint $table) {
-            $table->foreignId('blog_id')->constrained('blogs')->cascadeOnDelete();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('username')->unique();
         });
     }
 
@@ -21,9 +21,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('comments', function (Blueprint $table) {
-            $table->dropForeign('comments_blog_id_foreign');
-            $table->dropColumn('blog_id');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropUnique('users_username_unique');
+            $table->dropColumn('username');
         });
     }
 };
