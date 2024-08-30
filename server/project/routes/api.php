@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BannerController;
 use App\Http\Controllers\Api\CaptchaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,4 +21,8 @@ Route::middleware('json-response')->group(function () {
         Route::get('/captcha', [CaptchaController::class, 'generate'])->name('generate');
         Route::post('/captcha', [CaptchaController::class, 'verify'])->name('verify');
     });
+
+    Route::resource('banners', BannerController::class)
+        ->only(["index", "show", "store", "update", "destroy"])
+        ->middleware(['auth:sanctum', 'role:admin']);
 });
