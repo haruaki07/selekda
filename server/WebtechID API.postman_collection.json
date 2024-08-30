@@ -7,112 +7,46 @@
 	},
 	"item": [
 		{
-			"name": "Auth - Register",
-			"event": [
+			"name": "Auth",
+			"item": [
 				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"try {",
-							"    const response = await pm.sendRequest({",
-							"        url: pm.environment.get(\"base_url\") + \"/api/captcha\",",
-							"        method: \"GET\"",
-							"    });",
-							"",
-							"    let data = response.json().data;",
-							"    let answer = eval(data.challenge);",
-							"",
-							"    pm.environment.set(\"_captcha\", `${data.token}-${answer}`);",
-							"} catch (err) {",
-							"    console.error(err);",
-							"}"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"let data = pm.response.json().data;",
-							"pm.environment.set('_token', data.token);"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json"
-					},
-					{
-						"key": "X_CAPTCHA",
-						"value": "{{_captcha}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
+					"name": "Auth - Register",
+					"event": [
 						{
-							"key": "name",
-							"value": "Agus",
-							"type": "text"
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"try {",
+									"    const response = await pm.sendRequest({",
+									"        url: pm.environment.get(\"base_url\") + \"/api/captcha\",",
+									"        method: \"GET\"",
+									"    });",
+									"",
+									"    let data = response.json().data;",
+									"    let answer = eval(data.challenge);",
+									"",
+									"    pm.environment.set(\"_captcha\", `${data.token}-${answer}`);",
+									"} catch (err) {",
+									"    console.error(err);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						},
 						{
-							"key": "email",
-							"value": "agus@mail.com",
-							"type": "text"
-						},
-						{
-							"key": "username",
-							"value": "agus",
-							"type": "text"
-						},
-						{
-							"key": "password",
-							"value": "AgusLapar123",
-							"type": "text"
-						},
-						{
-							"key": "date_of_birth",
-							"value": "1999-07-20",
-							"description": "Y-m-d",
-							"type": "text"
-						},
-						{
-							"key": "phone_number",
-							"value": "088",
-							"type": "text"
-						},
-						{
-							"key": "profile_picture",
-							"type": "file",
-							"src": "postman-cloud:///1ef665fd-d497-45c0-9ae4-283274e307fd"
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let data = pm.response.json().data;",
+									"pm.environment.set('_token', data.token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
-					]
-				},
-				"url": {
-					"raw": "{{base_url}}/api/register",
-					"host": [
-						"{{base_url}}"
 					],
-					"path": [
-						"api",
-						"register"
-					]
-				},
-				"description": "Endpoint untuk daftar akun.\n\nMembutuhkan captcha di header `X_CAPTCHA` atau pada body dengan field `_captcha`."
-			},
-			"response": [
-				{
-					"name": "Success",
-					"originalRequest": {
+					"request": {
 						"method": "POST",
 						"header": [
 							{
@@ -121,7 +55,7 @@
 							},
 							{
 								"key": "X_CAPTCHA",
-								"value": "",
+								"value": "{{_captcha}}",
 								"type": "text"
 							}
 						],
@@ -150,152 +84,178 @@
 								},
 								{
 									"key": "date_of_birth",
-									"value": "11/01/09",
+									"value": "1999-07-20",
+									"description": "Y-m-d",
+									"type": "text"
+								},
+								{
+									"key": "phone_number",
+									"value": "088",
 									"type": "text"
 								},
 								{
 									"key": "profile_picture",
 									"type": "file",
 									"src": "postman-cloud:///1ef665fd-d497-45c0-9ae4-283274e307fd"
-								},
-								{
-									"key": "phone_number",
-									"value": "089",
-									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://localhost/api/register",
-							"protocol": "http",
+							"raw": "{{base_url}}/api/register",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
 							"path": [
 								"api",
 								"register"
 							]
-						}
+						},
+						"description": "Endpoint untuk daftar akun.\n\nMembutuhkan captcha di header `X_CAPTCHA` atau pada body dengan field `_captcha`."
 					},
-					"status": "Created",
-					"code": 201,
-					"_postman_previewlanguage": "json",
-					"header": [
+					"response": [
 						{
-							"key": "Host",
-							"value": "localhost"
-						},
-						{
-							"key": "Connection",
-							"value": "close"
-						},
-						{
-							"key": "X-Powered-By",
-							"value": "PHP/8.3.10"
-						},
-						{
-							"key": "Cache-Control",
-							"value": "no-cache, private"
-						},
-						{
-							"key": "Date",
-							"value": "Fri, 30 Aug 2024 00:02:17 GMT"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Access-Control-Allow-Origin",
-							"value": "*"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"data\": {\n        \"token\": \"4|BOkgex14FE8KTywn0MlivPBXAG1jdHsptAFs9GHLd080e1c3\",\n        \"user\": {\n            \"name\": \"Agus\",\n            \"username\": \"agus\",\n            \"email\": \"agus@mail.com\",\n            \"date_of_birth\": \"2009-11-01T00:00:00.000000Z\",\n            \"phone_number\": \"089\",\n            \"profile_picture\": \"uploads/pp/9Mg9GVNykagZI6Kg.png\",\n            \"updated_at\": \"2024-08-30T00:02:17.000000Z\",\n            \"created_at\": \"2024-08-30T00:02:17.000000Z\",\n            \"id\": 2\n        }\n    }\n}"
-				}
-			]
-		},
-		{
-			"name": "Auth - Login",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"try {",
-							"    const response = await pm.sendRequest({",
-							"        url: pm.environment.get(\"base_url\") + \"/api/captcha\",",
-							"        method: \"GET\"",
-							"    });",
-							"",
-							"    let data = response.json().data;",
-							"    let answer = eval(data.challenge);",
-							"",
-							"    pm.environment.set(\"_captcha\", `${data.token}-${answer}`);",
-							"} catch (err) {",
-							"    console.error(err);",
-							"}"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"let data = pm.response.json().data;",
-							"pm.environment.set('_token', data.token);"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json"
-					},
-					{
-						"key": "X_CAPTCHA",
-						"value": "{{_captcha}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "email",
-							"value": "agus@mail.com",
-							"type": "text"
-						},
-						{
-							"key": "password",
-							"value": "AgusLapar123",
-							"type": "text"
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "X_CAPTCHA",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Agus",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "agus@mail.com",
+											"type": "text"
+										},
+										{
+											"key": "username",
+											"value": "agus",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "AgusLapar123",
+											"type": "text"
+										},
+										{
+											"key": "date_of_birth",
+											"value": "11/01/09",
+											"type": "text"
+										},
+										{
+											"key": "profile_picture",
+											"type": "file",
+											"src": "postman-cloud:///1ef665fd-d497-45c0-9ae4-283274e307fd"
+										},
+										{
+											"key": "phone_number",
+											"value": "089",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost/api/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"register"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 00:02:17 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"token\": \"4|BOkgex14FE8KTywn0MlivPBXAG1jdHsptAFs9GHLd080e1c3\",\n        \"user\": {\n            \"name\": \"Agus\",\n            \"username\": \"agus\",\n            \"email\": \"agus@mail.com\",\n            \"date_of_birth\": \"2009-11-01T00:00:00.000000Z\",\n            \"phone_number\": \"089\",\n            \"profile_picture\": \"uploads/pp/9Mg9GVNykagZI6Kg.png\",\n            \"updated_at\": \"2024-08-30T00:02:17.000000Z\",\n            \"created_at\": \"2024-08-30T00:02:17.000000Z\",\n            \"id\": 2\n        }\n    }\n}"
 						}
 					]
 				},
-				"url": {
-					"raw": "{{base_url}}/api/login",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"api",
-						"login"
-					]
-				},
-				"description": "Endpoint untuk daftar akun.\n\nTerdapat token pada body (`token`) untuk token autentikasi.\n\nMembutuhkan captcha di header `X_CAPTCHA` atau pada body dengan field `_captcha`."
-			},
-			"response": [
 				{
-					"name": "Success",
-					"originalRequest": {
+					"name": "Auth - Login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"try {",
+									"    const response = await pm.sendRequest({",
+									"        url: pm.environment.get(\"base_url\") + \"/api/captcha\",",
+									"        method: \"GET\"",
+									"    });",
+									"",
+									"    let data = response.json().data;",
+									"    let answer = eval(data.challenge);",
+									"",
+									"    pm.environment.set(\"_captcha\", `${data.token}-${answer}`);",
+									"} catch (err) {",
+									"    console.error(err);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let data = pm.response.json().data;",
+									"pm.environment.set('_token', data.token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
 						"method": "POST",
 						"header": [
 							{
@@ -304,7 +264,7 @@
 							},
 							{
 								"key": "X_CAPTCHA",
-								"value": "",
+								"value": "{{_captcha}}",
 								"type": "text"
 							}
 						],
@@ -324,85 +284,6 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost/api/login",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"path": [
-								"api",
-								"login"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Host",
-							"value": "localhost"
-						},
-						{
-							"key": "Connection",
-							"value": "close"
-						},
-						{
-							"key": "X-Powered-By",
-							"value": "PHP/8.3.10"
-						},
-						{
-							"key": "Cache-Control",
-							"value": "no-cache, private"
-						},
-						{
-							"key": "Date",
-							"value": "Fri, 30 Aug 2024 00:03:48 GMT"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Access-Control-Allow-Origin",
-							"value": "*"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"data\": {\n        \"token\": \"5|0lTDqkp5HZ1JMylEB8YSMVTpaYot0Oi14Xe8ua8v8505dc35\",\n        \"user\": {\n            \"id\": 2,\n            \"name\": \"Agus\",\n            \"email\": \"agus@mail.com\",\n            \"email_verified_at\": null,\n            \"created_at\": \"2024-08-30T00:02:17.000000Z\",\n            \"updated_at\": \"2024-08-30T00:02:17.000000Z\",\n            \"date_of_birth\": \"2009-11-01T00:00:00.000000Z\",\n            \"phone_number\": \"089\",\n            \"profile_picture\": \"uploads/pp/9Mg9GVNykagZI6Kg.png\",\n            \"role\": \"user\",\n            \"username\": \"agus\"\n        }\n    }\n}"
-				},
-				{
-					"name": "Failed - Validation",
-					"originalRequest": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "X_CAPTCHA",
-								"value": "{{_captcha}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "email",
-									"value": "agus@mail.com",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "password",
-									"value": "AgusLapar123",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
 							"raw": "{{base_url}}/api/login",
 							"host": [
 								"{{base_url}}"
@@ -411,352 +292,646 @@
 								"api",
 								"login"
 							]
-						}
+						},
+						"description": "Endpoint untuk daftar akun.\n\nTerdapat token pada body (`token`) untuk token autentikasi.\n\nMembutuhkan captcha di header `X_CAPTCHA` atau pada body dengan field `_captcha`."
 					},
-					"status": "Bad Request",
-					"code": 400,
-					"_postman_previewlanguage": "json",
-					"header": [
+					"response": [
 						{
-							"key": "Host",
-							"value": "localhost"
-						},
-						{
-							"key": "Connection",
-							"value": "close"
-						},
-						{
-							"key": "X-Powered-By",
-							"value": "PHP/8.3.10"
-						},
-						{
-							"key": "Cache-Control",
-							"value": "no-cache, private"
-						},
-						{
-							"key": "Date",
-							"value": "Fri, 30 Aug 2024 01:03:41 GMT"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Access-Control-Allow-Origin",
-							"value": "*"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"error\": {\n        \"code\": 400,\n        \"reason\": \"ValidationError\",\n        \"message\": \"The email field is required.\",\n        \"errors\": {\n            \"email\": [\n                \"The email field is required.\"\n            ]\n        }\n    }\n}"
-				},
-				{
-					"name": "Failed - Wrong Credentials",
-					"originalRequest": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "X_CAPTCHA",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "agus@mail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "AgusLapar123",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost/api/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
 							},
-							{
-								"key": "X_CAPTCHA",
-								"value": "{{_captcha}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
 								{
-									"key": "email",
-									"value": "agus@mail.com",
-									"type": "text"
+									"key": "Host",
+									"value": "localhost"
 								},
 								{
-									"key": "password",
-									"value": "AgusLapar1231",
-									"type": "text"
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 00:03:48 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"token\": \"5|0lTDqkp5HZ1JMylEB8YSMVTpaYot0Oi14Xe8ua8v8505dc35\",\n        \"user\": {\n            \"id\": 2,\n            \"name\": \"Agus\",\n            \"email\": \"agus@mail.com\",\n            \"email_verified_at\": null,\n            \"created_at\": \"2024-08-30T00:02:17.000000Z\",\n            \"updated_at\": \"2024-08-30T00:02:17.000000Z\",\n            \"date_of_birth\": \"2009-11-01T00:00:00.000000Z\",\n            \"phone_number\": \"089\",\n            \"profile_picture\": \"uploads/pp/9Mg9GVNykagZI6Kg.png\",\n            \"role\": \"user\",\n            \"username\": \"agus\"\n        }\n    }\n}"
+						},
+						{
+							"name": "Failed - Validation",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "X_CAPTCHA",
+										"value": "{{_captcha}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "agus@mail.com",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "password",
+											"value": "AgusLapar123",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/api/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 01:03:41 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": {\n        \"code\": 400,\n        \"reason\": \"ValidationError\",\n        \"message\": \"The email field is required.\",\n        \"errors\": {\n            \"email\": [\n                \"The email field is required.\"\n            ]\n        }\n    }\n}"
+						},
+						{
+							"name": "Failed - Wrong Credentials",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "X_CAPTCHA",
+										"value": "{{_captcha}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "agus@mail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "AgusLapar1231",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/api/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 01:03:54 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": {\n        \"code\": 401,\n        \"message\": \"wrong email and password combination!\"\n    }\n}"
+						},
+						{
+							"name": "Success - Login Admin",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "X_CAPTCHA",
+										"value": "{{_captcha}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "admin@main.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "password",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/api/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 02:14:40 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"token\": \"6|OYWpDJ79RxQqN6s4KqDzpTApSDDQcOff1axhyVnYc5c37fe4\",\n        \"user\": {\n            \"id\": 4,\n            \"name\": \"Atmin\",\n            \"email\": \"admin@main.com\",\n            \"email_verified_at\": \"2024-08-30T02:08:11.000000Z\",\n            \"created_at\": \"2024-08-30T02:08:11.000000Z\",\n            \"updated_at\": \"2024-08-30T02:08:11.000000Z\",\n            \"date_of_birth\": \"2003-04-26T00:00:00.000000Z\",\n            \"phone_number\": \"+17817412683\",\n            \"profile_picture\": \"https://via.placeholder.com/640x480.png/003355?text=laborum\",\n            \"role\": \"admin\",\n            \"username\": \"atmin\"\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Auth - Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
 								}
 							]
 						},
-						"url": {
-							"raw": "{{base_url}}/api/login",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"login"
-							]
-						}
-					},
-					"status": "Unauthorized",
-					"code": 401,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Host",
-							"value": "localhost"
-						},
-						{
-							"key": "Connection",
-							"value": "close"
-						},
-						{
-							"key": "X-Powered-By",
-							"value": "PHP/8.3.10"
-						},
-						{
-							"key": "Cache-Control",
-							"value": "no-cache, private"
-						},
-						{
-							"key": "Date",
-							"value": "Fri, 30 Aug 2024 01:03:54 GMT"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Access-Control-Allow-Origin",
-							"value": "*"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"error\": {\n        \"code\": 401,\n        \"message\": \"wrong email and password combination!\"\n    }\n}"
-				},
-				{
-					"name": "Auth - Login Admin",
-					"originalRequest": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "X_CAPTCHA",
-								"value": "{{_captcha}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "email",
-									"value": "admin@main.com",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "password",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{base_url}}/api/login",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"login"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Host",
-							"value": "localhost"
-						},
-						{
-							"key": "Connection",
-							"value": "close"
-						},
-						{
-							"key": "X-Powered-By",
-							"value": "PHP/8.3.10"
-						},
-						{
-							"key": "Cache-Control",
-							"value": "no-cache, private"
-						},
-						{
-							"key": "Date",
-							"value": "Fri, 30 Aug 2024 02:14:40 GMT"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Access-Control-Allow-Origin",
-							"value": "*"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"data\": {\n        \"token\": \"6|OYWpDJ79RxQqN6s4KqDzpTApSDDQcOff1axhyVnYc5c37fe4\",\n        \"user\": {\n            \"id\": 4,\n            \"name\": \"Atmin\",\n            \"email\": \"admin@main.com\",\n            \"email_verified_at\": \"2024-08-30T02:08:11.000000Z\",\n            \"created_at\": \"2024-08-30T02:08:11.000000Z\",\n            \"updated_at\": \"2024-08-30T02:08:11.000000Z\",\n            \"date_of_birth\": \"2003-04-26T00:00:00.000000Z\",\n            \"phone_number\": \"+17817412683\",\n            \"profile_picture\": \"https://via.placeholder.com/640x480.png/003355?text=laborum\",\n            \"role\": \"admin\",\n            \"username\": \"atmin\"\n        }\n    }\n}"
-				}
-			]
-		},
-		{
-			"name": "Auth - Logout",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{_token}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/api/logout",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"api",
-						"logout"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Captcha - Generate",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"let data = pm.response.json().data;",
-							"let answer = eval(data.challenge);",
-							"pm.environment.set(\"_captcha\", `${data.token}-${answer}`);"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/api/captcha",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"api",
-						"captcha"
-					]
-				},
-				"description": "Endpoint untuk generate captcha. Captcha adalah pertambahan sederhana dari angka 0-20 secara acak."
-			},
-			"response": [
-				{
-					"name": "Success",
-					"originalRequest": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost/api/captcha",
-							"protocol": "http",
+							"raw": "{{base_url}}/api/logout",
 							"host": [
-								"localhost"
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Auth - Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						},
+						"description": "Mendapatkan detail user yang sedang login."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/api/user",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"user"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 03:56:39 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 4,\n    \"name\": \"Atmin Jahat\",\n    \"email\": \"admin@main.com\",\n    \"email_verified_at\": \"2024-08-30T02:08:11.000000Z\",\n    \"created_at\": \"2024-08-30T02:08:11.000000Z\",\n    \"updated_at\": \"2024-08-30T03:56:14.000000Z\",\n    \"date_of_birth\": \"2003-04-26T00:00:00.000000Z\",\n    \"phone_number\": \"+17817412683\",\n    \"profile_picture\": \"https://via.placeholder.com/640x480.png/003355?text=laborum\",\n    \"role\": \"admin\",\n    \"username\": \"atmin\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Auth - Profile Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "_method",
+									"value": "PUT",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Atmin Jahat",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						},
+						"description": "Endpoint untuk update profil."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "_method",
+											"value": "PUT",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "Atmin Jahat",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost/api/user",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"user"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 03:56:14 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 4,\n        \"name\": \"Atmin Jahat\",\n        \"email\": \"admin@main.com\",\n        \"email_verified_at\": \"2024-08-30T02:08:11.000000Z\",\n        \"created_at\": \"2024-08-30T02:08:11.000000Z\",\n        \"updated_at\": \"2024-08-30T03:56:14.000000Z\",\n        \"date_of_birth\": \"2003-04-26T00:00:00.000000Z\",\n        \"phone_number\": \"+17817412683\",\n        \"profile_picture\": \"https://via.placeholder.com/640x480.png/003355?text=laborum\",\n        \"role\": \"admin\",\n        \"username\": \"atmin\"\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Captcha",
+			"item": [
+				{
+					"name": "Captcha - Generate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let data = pm.response.json().data;",
+									"let answer = eval(data.challenge);",
+									"pm.environment.set(\"_captcha\", `${data.token}-${answer}`);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/captcha",
+							"host": [
+								"{{base_url}}"
 							],
 							"path": [
 								"api",
 								"captcha"
 							]
-						}
+						},
+						"description": "Endpoint untuk generate captcha. Captcha adalah pertambahan sederhana dari angka 0-20 secara acak."
 					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
+					"response": [
 						{
-							"key": "Host",
-							"value": "localhost"
-						},
-						{
-							"key": "Connection",
-							"value": "close"
-						},
-						{
-							"key": "X-Powered-By",
-							"value": "PHP/8.3.10"
-						},
-						{
-							"key": "Cache-Control",
-							"value": "no-cache, private"
-						},
-						{
-							"key": "Date",
-							"value": "Thu, 29 Aug 2024 23:59:48 GMT"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Access-Control-Allow-Origin",
-							"value": "*"
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/api/captcha",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"captcha"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 29 Aug 2024 23:59:48 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"token\": \"JhYXviCfvxP8U3fiEA7buw==\",\n        \"challenge\": \"19 + 4\"\n    }\n}"
 						}
-					],
-					"cookie": [],
-					"body": "{\n    \"data\": {\n        \"token\": \"JhYXviCfvxP8U3fiEA7buw==\",\n        \"challenge\": \"19 + 4\"\n    }\n}"
-				}
-			]
-		},
-		{
-			"name": "Captcha - Validate",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "X_CAPTCHA",
-						"value": "{{_captcha}}",
-						"type": "text"
-					},
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{base_url}}/api/captcha",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"api",
-						"captcha"
 					]
 				},
-				"description": "Endpoint untuk validasi captcha. Token dan challenge harus didapatkan terlebih dulu dari GET /api/captcha, seletah itu include header X_CAPTCHA dengan format `{token}-{answer}`. Atau bisa juga dimasukkan pada body dengan nama field `_captcha`."
-			},
-			"response": [
 				{
-					"name": "Success",
-					"originalRequest": {
+					"name": "Captcha - Validate",
+					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "X_CAPTCHA",
-								"value": "",
+								"value": "{{_captcha}}",
 								"type": "text"
 							},
 							{
@@ -766,125 +941,115 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost/api/captcha",
-							"protocol": "http",
+							"raw": "{{base_url}}/api/captcha",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
 							"path": [
 								"api",
 								"captcha"
 							]
-						}
+						},
+						"description": "Endpoint untuk validasi captcha. Token dan challenge harus didapatkan terlebih dulu dari GET /api/captcha, seletah itu include header X_CAPTCHA dengan format `{token}-{answer}`. Atau bisa juga dimasukkan pada body dengan nama field `_captcha`."
 					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
+					"response": [
 						{
-							"key": "Host",
-							"value": "localhost"
-						},
-						{
-							"key": "Connection",
-							"value": "close"
-						},
-						{
-							"key": "X-Powered-By",
-							"value": "PHP/8.3.10"
-						},
-						{
-							"key": "Cache-Control",
-							"value": "no-cache, private"
-						},
-						{
-							"key": "Date",
-							"value": "Fri, 30 Aug 2024 00:00:32 GMT"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Access-Control-Allow-Origin",
-							"value": "*"
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X_CAPTCHA",
+										"value": "",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost/api/captcha",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"captcha"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 00:00:32 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"success\"\n}"
 						}
-					],
-					"cookie": [],
-					"body": "{\n    \"message\": \"success\"\n}"
+					]
 				}
 			]
 		},
 		{
-			"name": "Banner - Create",
-			"event": [
+			"name": "Banner",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"let data = pm.response.json().data;",
-							"pm.environment.set('_banner_id', data.id);"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"name": "Banner - Create",
+					"event": [
 						{
-							"key": "token",
-							"value": "{{_token}}",
-							"type": "string"
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let data = pm.response.json().data;",
+									"pm.environment.set('_banner_id', data.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "title",
-							"value": "Seminar",
-							"type": "text"
-						},
-						{
-							"key": "image",
-							"type": "file",
-							"src": "postman-cloud:///1eefd819-4485-4180-a346-7a910a38309b"
-						},
-						{
-							"key": "description",
-							"value": "Join us for an engaging seminar that explores the latest trends in digital innovation.",
-							"type": "text"
-						},
-						{
-							"key": "status",
-							"value": "active",
-							"description": "active/inactive",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "{{base_url}}/api/banners",
-					"host": [
-						"{{base_url}}"
 					],
-					"path": [
-						"api",
-						"banners"
-					]
-				},
-				"description": "Endpoint untuk membuat banner.\n\nHanya bisa diakses oleh Admin."
-			},
-			"response": [
-				{
-					"name": "Success",
-					"originalRequest": {
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -922,77 +1087,104 @@
 								"api",
 								"banners"
 							]
-						}
+						},
+						"description": "Endpoint untuk membuat banner.\n\nHanya bisa diakses oleh Admin."
 					},
-					"status": "Created",
-					"code": 201,
-					"_postman_previewlanguage": "json",
-					"header": [
+					"response": [
 						{
-							"key": "Host",
-							"value": "localhost"
-						},
-						{
-							"key": "Connection",
-							"value": "close"
-						},
-						{
-							"key": "X-Powered-By",
-							"value": "PHP/8.3.10"
-						},
-						{
-							"key": "Cache-Control",
-							"value": "no-cache, private"
-						},
-						{
-							"key": "Date",
-							"value": "Fri, 30 Aug 2024 02:17:33 GMT"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Access-Control-Allow-Origin",
-							"value": "*"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"data\": {\n        \"title\": \"Seminar\",\n        \"image_url\": \"uploads/banners/qfdJzYTj7VJYbxc1.jpg\",\n        \"description\": \"Join us for an engaging seminar that explores the latest trends in digital innovation.\",\n        \"status\": \"active\",\n        \"updated_at\": \"2024-08-30T02:17:33.000000Z\",\n        \"created_at\": \"2024-08-30T02:17:33.000000Z\",\n        \"id\": 1\n    }\n}"
-				}
-			]
-		},
-		{
-			"name": "Banner - List",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{_token}}",
-							"type": "string"
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "Seminar",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "postman-cloud:///1eefd819-4485-4180-a346-7a910a38309b"
+										},
+										{
+											"key": "description",
+											"value": "Join us for an engaging seminar that explores the latest trends in digital innovation.",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "active",
+											"description": "active/inactive",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost/api/banners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"banners"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 02:17:33 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"title\": \"Seminar\",\n        \"image_url\": \"uploads/banners/qfdJzYTj7VJYbxc1.jpg\",\n        \"description\": \"Join us for an engaging seminar that explores the latest trends in digital innovation.\",\n        \"status\": \"active\",\n        \"updated_at\": \"2024-08-30T02:17:33.000000Z\",\n        \"created_at\": \"2024-08-30T02:17:33.000000Z\",\n        \"id\": 1\n    }\n}"
 						}
 					]
 				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/api/banners",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"api",
-						"banners"
-					]
-				},
-				"description": "Endpoint untuk list semua banner.\n\nHanya bisa diakses oleh Admin."
-			},
-			"response": [
 				{
-					"name": "Success",
-					"originalRequest": {
+					"name": "Banner - List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -1004,96 +1196,90 @@
 								"api",
 								"banners"
 							]
-						}
+						},
+						"description": "Endpoint untuk list semua banner.\n\nHanya bisa diakses oleh Admin."
 					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
+					"response": [
 						{
-							"key": "Host",
-							"value": "localhost"
-						},
-						{
-							"key": "Connection",
-							"value": "close"
-						},
-						{
-							"key": "X-Powered-By",
-							"value": "PHP/8.3.10"
-						},
-						{
-							"key": "Cache-Control",
-							"value": "no-cache, private"
-						},
-						{
-							"key": "Date",
-							"value": "Fri, 30 Aug 2024 02:19:13 GMT"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Access-Control-Allow-Origin",
-							"value": "*"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"title\": \"Seminar\",\n            \"image_url\": \"uploads/banners/qfdJzYTj7VJYbxc1.jpg\",\n            \"description\": \"Join us for an engaging seminar that explores the latest trends in digital innovation.\",\n            \"status\": \"active\",\n            \"created_at\": \"2024-08-30T02:17:33.000000Z\",\n            \"updated_at\": \"2024-08-30T02:17:33.000000Z\"\n        }\n    ]\n}"
-				}
-			]
-		},
-		{
-			"name": "Banner - Get",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{_token}}",
-							"type": "string"
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/api/banners",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"banners"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 02:19:13 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"title\": \"Seminar\",\n            \"image_url\": \"uploads/banners/qfdJzYTj7VJYbxc1.jpg\",\n            \"description\": \"Join us for an engaging seminar that explores the latest trends in digital innovation.\",\n            \"status\": \"active\",\n            \"created_at\": \"2024-08-30T02:17:33.000000Z\",\n            \"updated_at\": \"2024-08-30T02:17:33.000000Z\"\n        }\n    ]\n}"
 						}
 					]
 				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/api/banners/:id",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"api",
-						"banners",
-						":id"
-					],
-					"variable": [
-						{
-							"key": "id",
-							"value": "{{_banner_id}}"
-						}
-					]
-				},
-				"description": "Endpoint untuk melihat banner by id.\n\nHanya bisa diakses oleh Admin."
-			},
-			"response": [
 				{
-					"name": "Success",
-					"originalRequest": {
+					"name": "Banner - Get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -1112,117 +1298,97 @@
 									"value": "{{_banner_id}}"
 								}
 							]
-						}
+						},
+						"description": "Endpoint untuk melihat banner by id.\n\nHanya bisa diakses oleh Admin."
 					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
+					"response": [
 						{
-							"key": "Host",
-							"value": "localhost"
-						},
-						{
-							"key": "Connection",
-							"value": "close"
-						},
-						{
-							"key": "X-Powered-By",
-							"value": "PHP/8.3.10"
-						},
-						{
-							"key": "Cache-Control",
-							"value": "no-cache, private"
-						},
-						{
-							"key": "Date",
-							"value": "Fri, 30 Aug 2024 02:21:42 GMT"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Access-Control-Allow-Origin",
-							"value": "*"
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/api/banners/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"banners",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{_banner_id}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 02:21:42 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 2,\n        \"title\": \"Seminar\",\n        \"image_url\": \"uploads/banners/j592ZWfMU18lCOVR.jpg\",\n        \"description\": \"Join us for an engaging seminar that explores the latest trends in digital innovation.\",\n        \"status\": \"active\",\n        \"created_at\": \"2024-08-30T02:21:09.000000Z\",\n        \"updated_at\": \"2024-08-30T02:21:09.000000Z\"\n    }\n}"
 						}
-					],
-					"cookie": [],
-					"body": "{\n    \"data\": {\n        \"id\": 2,\n        \"title\": \"Seminar\",\n        \"image_url\": \"uploads/banners/j592ZWfMU18lCOVR.jpg\",\n        \"description\": \"Join us for an engaging seminar that explores the latest trends in digital innovation.\",\n        \"status\": \"active\",\n        \"created_at\": \"2024-08-30T02:21:09.000000Z\",\n        \"updated_at\": \"2024-08-30T02:21:09.000000Z\"\n    }\n}"
-				}
-			]
-		},
-		{
-			"name": "Banner - Update",
-			"event": [
+					]
+				},
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"name": "Banner - Update",
+					"event": [
 						{
-							"key": "token",
-							"value": "{{_token}}",
-							"type": "string"
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "",
-						"value": "",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "status",
-							"value": "inactive",
-							"type": "text"
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
 						},
-						{
-							"key": "_method",
-							"value": "PUT",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "{{base_url}}/api/banners/:id",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"api",
-						"banners",
-						":id"
-					],
-					"variable": [
-						{
-							"key": "id",
-							"value": "{{_banner_id}}"
-						}
-					]
-				},
-				"description": "Endpoint untuk memperbarui banner by id.\n\nHanya bisa diakses oleh Admin."
-			},
-			"response": [
-				{
-					"name": "Success",
-					"originalRequest": {
 						"method": "POST",
 						"header": [
 							{
@@ -1244,12 +1410,7 @@
 									"value": "PUT",
 									"type": "text"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{base_url}}/api/banners/:id",
@@ -1267,93 +1428,2333 @@
 									"value": "{{_banner_id}}"
 								}
 							]
-						}
+						},
+						"description": "Endpoint untuk memperbarui banner by id.\n\nHanya bisa diakses oleh Admin."
 					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
+					"response": [
 						{
-							"key": "Host",
-							"value": "localhost"
-						},
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "status",
+											"value": "inactive",
+											"type": "text"
+										},
+										{
+											"key": "_method",
+											"value": "PUT",
+											"type": "text"
+										}
+									],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost/api/banners/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"banners",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{_banner_id}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 02:26:54 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 2,\n        \"title\": \"Seminar\",\n        \"image_url\": \"uploads/banners/j592ZWfMU18lCOVR.jpg\",\n        \"description\": \"Join us for an engaging seminar that explores the latest trends in digital innovation.\",\n        \"status\": \"inactive\",\n        \"created_at\": \"2024-08-30T02:21:09.000000Z\",\n        \"updated_at\": \"2024-08-30T02:26:54.000000Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Banner - Delete",
+					"event": [
 						{
-							"key": "Connection",
-							"value": "close"
-						},
-						{
-							"key": "X-Powered-By",
-							"value": "PHP/8.3.10"
-						},
-						{
-							"key": "Cache-Control",
-							"value": "no-cache, private"
-						},
-						{
-							"key": "Date",
-							"value": "Fri, 30 Aug 2024 02:26:54 GMT"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Access-Control-Allow-Origin",
-							"value": "*"
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.unset('_banner_id');"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
 					],
-					"cookie": [],
-					"body": "{\n    \"data\": {\n        \"id\": 2,\n        \"title\": \"Seminar\",\n        \"image_url\": \"uploads/banners/j592ZWfMU18lCOVR.jpg\",\n        \"description\": \"Join us for an engaging seminar that explores the latest trends in digital innovation.\",\n        \"status\": \"inactive\",\n        \"created_at\": \"2024-08-30T02:21:09.000000Z\",\n        \"updated_at\": \"2024-08-30T02:26:54.000000Z\"\n    }\n}"
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/banners/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"banners",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{_banner_id}}"
+								}
+							]
+						},
+						"description": "Endpoint untuk menghapus banner by id.\n\nHanya bisa diakses oleh Admin."
+					},
+					"response": []
 				}
 			]
 		},
 		{
-			"name": "Banner - Delete",
-			"event": [
+			"name": "Blog",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.environment.unset('_banner_id');"
+					"name": "Blog - Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let data = pm.response.json().data;",
+									"pm.environment.set('_blog_id', data.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "What is API?",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "postman-cloud:///1eefd819-4485-4180-a346-7a910a38309b"
+								},
+								{
+									"key": "description",
+									"value": "Api adalah...",
+									"type": "text"
+								},
+								{
+									"key": "tags",
+									"value": "api,web,rest",
+									"description": "Setiap tag dipisahkan dengan koma.",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/blogs",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"blogs"
+							]
+						},
+						"description": "Endpoint untuk membuat blog.\n\nHanya bisa diakses oleh Admin."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "What is API?",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "postman-cloud:///1eefd819-4485-4180-a346-7a910a38309b"
+										},
+										{
+											"key": "description",
+											"value": "Api adalah...",
+											"type": "text"
+										},
+										{
+											"key": "tags",
+											"value": "api,web,rest",
+											"description": "Setiap tag dipisahkan dengan koma.",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost/api/blogs",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"blogs"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 02:49:34 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"title\": \"What is API?\",\n        \"image_url\": \"uploads/blogs/DhziwSHbpA7xVEKH.jpg\",\n        \"description\": \"Api adalah...\",\n        \"tags\": \"api,web,rest\",\n        \"user_id\": 4,\n        \"updated_at\": \"2024-08-30T02:49:34.000000Z\",\n        \"created_at\": \"2024-08-30T02:49:34.000000Z\",\n        \"id\": 2\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Blog - List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/blogs",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"blogs"
+							]
+						},
+						"description": "Endpoint untuk list semua blog.\n\nHanya bisa diakses oleh Admin."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/api/blogs",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"blogs"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 02:49:54 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"title\": \"What is API?\",\n            \"image_url\": \"uploads/blogs/8oOApy6qHIxf8w3a.jpg\",\n            \"description\": \"Api adalah...\",\n            \"tags\": \"api,web,rest\",\n            \"user_id\": 4,\n            \"created_at\": \"2024-08-30T02:49:07.000000Z\",\n            \"updated_at\": \"2024-08-30T02:49:07.000000Z\"\n        },\n        {\n            \"id\": 2,\n            \"title\": \"What is API?\",\n            \"image_url\": \"uploads/blogs/DhziwSHbpA7xVEKH.jpg\",\n            \"description\": \"Api adalah...\",\n            \"tags\": \"api,web,rest\",\n            \"user_id\": 4,\n            \"created_at\": \"2024-08-30T02:49:34.000000Z\",\n            \"updated_at\": \"2024-08-30T02:49:34.000000Z\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Blog - Get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/blogs/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"blogs",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{_blog_id}}"
+								}
+							]
+						},
+						"description": "Endpoint untuk melihat blog by id.\n\nHanya bisa diakses oleh Admin."
+					},
+					"response": [
+						{
+							"name": "Succes",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/api/blogs/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"blogs",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 02:50:49 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 2,\n        \"title\": \"What is API?\",\n        \"image_url\": \"uploads/blogs/DhziwSHbpA7xVEKH.jpg\",\n        \"description\": \"Api adalah...\",\n        \"tags\": \"api,web,rest\",\n        \"user_id\": 4,\n        \"created_at\": \"2024-08-30T02:49:34.000000Z\",\n        \"updated_at\": \"2024-08-30T02:49:34.000000Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Blog - Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
 						],
-						"type": "text/javascript",
-						"packages": {}
-					}
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Apa itu API?",
+									"type": "text"
+								},
+								{
+									"key": "_method",
+									"value": "PUT",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/blogs/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"blogs",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{_blog_id}}"
+								}
+							]
+						},
+						"description": "Endpoint untuk memperbarui blog by id.\n\nHanya bisa diakses oleh Admin."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "Apa itu API?",
+											"type": "text"
+										},
+										{
+											"key": "_method",
+											"value": "PUT",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost/api/blogs/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"blogs",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 02:51:36 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 2,\n        \"title\": \"Apa itu API?\",\n        \"image_url\": \"uploads/blogs/DhziwSHbpA7xVEKH.jpg\",\n        \"description\": \"Api adalah...\",\n        \"tags\": \"api,web,rest\",\n        \"user_id\": 4,\n        \"created_at\": \"2024-08-30T02:49:34.000000Z\",\n        \"updated_at\": \"2024-08-30T02:51:36.000000Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Blog - Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.unset('_banner_id');"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/blogs/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"blogs",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{_blog_id}}"
+								}
+							]
+						},
+						"description": "Endpoint untuk menghapus blog by id.\n\nHanya bisa diakses oleh Admin."
+					},
+					"response": []
 				}
-			],
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
+			]
+		},
+		{
+			"name": "Portfolio",
+			"item": [
+				{
+					"name": "Portfolio - Create",
+					"event": [
 						{
-							"key": "token",
-							"value": "{{_token}}",
-							"type": "string"
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let data = pm.response.json().data;",
+									"pm.environment.set('_portfolio_id', data.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "My Project",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "postman-cloud:///1eefd819-4485-4180-a346-7a910a38309b"
+								},
+								{
+									"key": "description",
+									"value": "Projek saya membuat api.",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/portfolios",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"portfolios"
+							]
+						},
+						"description": "Endpoint untuk membuat portfolio.\n\nHanya bisa diakses oleh Admin."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "My Project",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "postman-cloud:///1eefd819-4485-4180-a346-7a910a38309b"
+										},
+										{
+											"key": "description",
+											"value": "Projek saya membuat api.",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost/api/portfolios",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"portfolios"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 03:13:04 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"title\": \"My Project\",\n        \"image_url\": \"uploads/portfolios/KGyau8wO6a4e6h4m.jpg\",\n        \"description\": \"Projek saya membuat api.\",\n        \"user_id\": 4,\n        \"updated_at\": \"2024-08-30T03:13:04.000000Z\",\n        \"created_at\": \"2024-08-30T03:13:04.000000Z\",\n        \"id\": 2\n    }\n}"
 						}
 					]
 				},
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/api/banners/:id",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"api",
-						"banners",
-						":id"
-					],
-					"variable": [
+				{
+					"name": "Portfolio - List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/portfolios",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"portfolios"
+							]
+						},
+						"description": "Endpoint untuk list semua portfolio.\n\nHanya bisa diakses oleh Admin."
+					},
+					"response": [
 						{
-							"key": "id",
-							"value": "{{_banner_id}}"
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/api/portfolios",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"portfolios"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 03:13:38 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"title\": \"My Project\",\n            \"image_url\": \"uploads/portfolios/slodwy4VCjLZMuzg.jpg\",\n            \"description\": \"Projek saya membuat api.\",\n            \"user_id\": 4,\n            \"created_at\": \"2024-08-30T03:12:55.000000Z\",\n            \"updated_at\": \"2024-08-30T03:12:55.000000Z\"\n        },\n        {\n            \"id\": 2,\n            \"title\": \"My Project\",\n            \"image_url\": \"uploads/portfolios/KGyau8wO6a4e6h4m.jpg\",\n            \"description\": \"Projek saya membuat api.\",\n            \"user_id\": 4,\n            \"created_at\": \"2024-08-30T03:13:04.000000Z\",\n            \"updated_at\": \"2024-08-30T03:13:04.000000Z\"\n        }\n    ]\n}"
 						}
 					]
 				},
-				"description": "Endpoint untuk menghapus banner by id.\n\nHanya bisa diakses oleh Admin."
-			},
-			"response": []
+				{
+					"name": "Portfolio - Get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/portfolios/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"portfolios",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{_portfolio_id}}"
+								}
+							]
+						},
+						"description": "Endpoint untuk melihat portfolio by id.\n\nHanya bisa diakses oleh Admin."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/api/portfolios/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"portfolios",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{_portfolio_id}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 03:14:04 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 2,\n        \"title\": \"My Project\",\n        \"image_url\": \"uploads/portfolios/KGyau8wO6a4e6h4m.jpg\",\n        \"description\": \"Projek saya membuat api.\",\n        \"user_id\": 4,\n        \"created_at\": \"2024-08-30T03:13:04.000000Z\",\n        \"updated_at\": \"2024-08-30T03:13:04.000000Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Portfolio - Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "My API Project",
+									"type": "text"
+								},
+								{
+									"key": "_method",
+									"value": "PUT",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/portfolios/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"portfolios",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{_portfolio_id}}"
+								}
+							]
+						},
+						"description": "Endpoint untuk memperbarui portfolio by id.\n\nHanya bisa diakses oleh Admin."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "My API Project",
+											"type": "text"
+										},
+										{
+											"key": "_method",
+											"value": "PUT",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost/api/portfolios/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"portfolios",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{_portfolio_id}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 03:15:09 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 2,\n        \"title\": \"My API Project\",\n        \"image_url\": \"uploads/portfolios/KGyau8wO6a4e6h4m.jpg\",\n        \"description\": \"Projek saya membuat api.\",\n        \"user_id\": 4,\n        \"created_at\": \"2024-08-30T03:13:04.000000Z\",\n        \"updated_at\": \"2024-08-30T03:15:09.000000Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Portfolio - Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.unset('_portfolio_id');"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/portfolios/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"portfolios",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{_portfolio_id}}"
+								}
+							]
+						},
+						"description": "Endpoint untuk menghapus portfolio by id.\n\nHanya bisa diakses oleh Admin."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "User - Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let data = pm.response.json().data;",
+									"pm.environment.set('_user_id', data.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "User",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "user@mail.com",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "user1",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "User123",
+									"type": "text"
+								},
+								{
+									"key": "date_of_birth",
+									"value": "1999-07-20",
+									"type": "text"
+								},
+								{
+									"key": "phone_number",
+									"value": "088",
+									"type": "text"
+								},
+								{
+									"key": "profile_picture",
+									"type": "file",
+									"src": "postman-cloud:///1ef665fd-d497-45c0-9ae4-283274e307fd"
+								},
+								{
+									"key": "role",
+									"value": "user",
+									"description": "user or admin",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						},
+						"description": "Endpoint untuk membuat user.\n\nHanya bisa diakses oleh Admin."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "User",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "user@mail.com",
+											"type": "text"
+										},
+										{
+											"key": "username",
+											"value": "user1",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "User123",
+											"type": "text"
+										},
+										{
+											"key": "date_of_birth",
+											"value": "1999-07-20",
+											"type": "text"
+										},
+										{
+											"key": "phone_number",
+											"value": "088",
+											"type": "text"
+										},
+										{
+											"key": "profile_picture",
+											"type": "file",
+											"src": "postman-cloud:///1ef665fd-d497-45c0-9ae4-283274e307fd"
+										},
+										{
+											"key": "role",
+											"value": "user",
+											"description": "user or admin",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost/api/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 03:17:59 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"name\": \"User\",\n        \"username\": \"user1\",\n        \"email\": \"user@mail.com\",\n        \"date_of_birth\": \"1999-07-20T00:00:00.000000Z\",\n        \"phone_number\": \"088\",\n        \"profile_picture\": \"uploads/pp/8Ie7rAef3dKpYn2y.png\",\n        \"role\": \"user\",\n        \"updated_at\": \"2024-08-30T03:17:59.000000Z\",\n        \"created_at\": \"2024-08-30T03:17:59.000000Z\",\n        \"id\": 5\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "User - List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						},
+						"description": "Endpoint untuk list semua user.\n\nHanya bisa diakses oleh Admin."
+					},
+					"response": [
+						{
+							"name": "Succes",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/api/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 03:18:19 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Budi\",\n            \"email\": \"budi@mail.com\",\n            \"email_verified_at\": null,\n            \"created_at\": \"2024-08-29T23:43:07.000000Z\",\n            \"updated_at\": \"2024-08-29T23:43:07.000000Z\",\n            \"date_of_birth\": \"2009-11-01T00:00:00.000000Z\",\n            \"phone_number\": \"089\",\n            \"profile_picture\": \"uploads/pp/we8QlCKf6kepsBYW.png\",\n            \"role\": \"user\",\n            \"username\": \"budi\"\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Agus\",\n            \"email\": \"agus@mail.com\",\n            \"email_verified_at\": null,\n            \"created_at\": \"2024-08-30T00:02:17.000000Z\",\n            \"updated_at\": \"2024-08-30T00:02:17.000000Z\",\n            \"date_of_birth\": \"2009-11-01T00:00:00.000000Z\",\n            \"phone_number\": \"089\",\n            \"profile_picture\": \"uploads/pp/9Mg9GVNykagZI6Kg.png\",\n            \"role\": \"user\",\n            \"username\": \"agus\"\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Test User\",\n            \"email\": \"test@example.com\",\n            \"email_verified_at\": \"2024-08-30T02:08:10.000000Z\",\n            \"created_at\": \"2024-08-30T02:08:11.000000Z\",\n            \"updated_at\": \"2024-08-30T02:08:11.000000Z\",\n            \"date_of_birth\": \"2015-07-01T00:00:00.000000Z\",\n            \"phone_number\": \"754.718.0784\",\n            \"profile_picture\": \"https://via.placeholder.com/640x480.png/00aabb?text=exercitationem\",\n            \"role\": \"user\",\n            \"username\": \"user\"\n        },\n        {\n            \"id\": 4,\n            \"name\": \"Atmin\",\n            \"email\": \"admin@main.com\",\n            \"email_verified_at\": \"2024-08-30T02:08:11.000000Z\",\n            \"created_at\": \"2024-08-30T02:08:11.000000Z\",\n            \"updated_at\": \"2024-08-30T02:08:11.000000Z\",\n            \"date_of_birth\": \"2003-04-26T00:00:00.000000Z\",\n            \"phone_number\": \"+17817412683\",\n            \"profile_picture\": \"https://via.placeholder.com/640x480.png/003355?text=laborum\",\n            \"role\": \"admin\",\n            \"username\": \"atmin\"\n        },\n        {\n            \"id\": 5,\n            \"name\": \"User\",\n            \"email\": \"user@mail.com\",\n            \"email_verified_at\": null,\n            \"created_at\": \"2024-08-30T03:17:59.000000Z\",\n            \"updated_at\": \"2024-08-30T03:17:59.000000Z\",\n            \"date_of_birth\": \"1999-07-20T00:00:00.000000Z\",\n            \"phone_number\": \"088\",\n            \"profile_picture\": \"uploads/pp/8Ie7rAef3dKpYn2y.png\",\n            \"role\": \"user\",\n            \"username\": \"user1\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "User - Get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{_user_id}}"
+								}
+							]
+						},
+						"description": "Endpoint untuk melihat user by id.\n\nHanya bisa diakses oleh Admin."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/api/users/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 03:19:03 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 5,\n        \"name\": \"User\",\n        \"email\": \"user@mail.com\",\n        \"email_verified_at\": null,\n        \"created_at\": \"2024-08-30T03:17:59.000000Z\",\n        \"updated_at\": \"2024-08-30T03:17:59.000000Z\",\n        \"date_of_birth\": \"1999-07-20T00:00:00.000000Z\",\n        \"phone_number\": \"088\",\n        \"profile_picture\": \"uploads/pp/8Ie7rAef3dKpYn2y.png\",\n        \"role\": \"user\",\n        \"username\": \"user1\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "User - Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "New User",
+									"type": "text"
+								},
+								{
+									"key": "_method",
+									"value": "PUT",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{_user_id}}"
+								}
+							]
+						},
+						"description": "Endpoint untuk memperbarui user by id.\n\nHanya bisa diakses oleh Admin."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "New User",
+											"type": "text"
+										},
+										{
+											"key": "_method",
+											"value": "PUT",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost/api/users/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 03:21:14 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 5,\n        \"name\": \"New User\",\n        \"email\": \"user@mail.com\",\n        \"email_verified_at\": null,\n        \"created_at\": \"2024-08-30T03:17:59.000000Z\",\n        \"updated_at\": \"2024-08-30T03:21:14.000000Z\",\n        \"date_of_birth\": \"1999-07-20T00:00:00.000000Z\",\n        \"phone_number\": \"088\",\n        \"profile_picture\": \"uploads/pp/8Ie7rAef3dKpYn2y.png\",\n        \"role\": \"user\",\n        \"username\": \"user1\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "User - Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.unset('_banner_id');"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{_user_id}}"
+								}
+							]
+						},
+						"description": "Endpoint untuk menghapus user by id.\n\nHanya bisa diakses oleh Admin."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comment",
+			"item": [
+				{
+					"name": "Comment - Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let data = pm.response.json().data;",
+									"pm.environment.set('_comment_id', data.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Anonymous",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "anon@mail.com",
+									"type": "text"
+								},
+								{
+									"key": "subject",
+									"value": "Some questions",
+									"type": "text"
+								},
+								{
+									"key": "website",
+									"value": "https://example.com",
+									"type": "text"
+								},
+								{
+									"key": "content",
+									"value": "Hey, I'm curious about...",
+									"type": "text"
+								},
+								{
+									"key": "blog_id",
+									"value": "{{_blog_id}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/comments",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"comments"
+							]
+						},
+						"description": "Endpoint untuk membuat komen.\n\nHanya bisa diakses oleh Admin."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Anonymous",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "anon@mail.com",
+											"type": "text"
+										},
+										{
+											"key": "subject",
+											"value": "Some questions",
+											"type": "text"
+										},
+										{
+											"key": "website",
+											"value": "https://example.com",
+											"type": "text"
+										},
+										{
+											"key": "content",
+											"value": "Hey, I'm curious about...",
+											"type": "text"
+										},
+										{
+											"key": "blog_id",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost/api/comments",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"comments"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 03:42:37 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"name\": \"Anonymous\",\n        \"email\": \"anon@mail.com\",\n        \"subject\": \"Some questions\",\n        \"website\": \"https://example.com\",\n        \"content\": \"Hey, I'm curious about...\",\n        \"blog_id\": \"3\",\n        \"user_id\": 4,\n        \"updated_at\": \"2024-08-30T03:42:37.000000Z\",\n        \"created_at\": \"2024-08-30T03:42:37.000000Z\",\n        \"id\": 1\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Comment - List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/comments",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"comments"
+							]
+						},
+						"description": "Endpoint untuk list semua komen.\n\nHanya bisa diakses oleh Admin."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/api/comments",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"comments"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 03:43:00 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Anonymous\",\n            \"email\": \"anon@mail.com\",\n            \"subject\": \"Some questions\",\n            \"website\": \"https://example.com\",\n            \"content\": \"Hey, I'm curious about...\",\n            \"created_at\": \"2024-08-30T03:42:37.000000Z\",\n            \"updated_at\": \"2024-08-30T03:42:37.000000Z\",\n            \"blog_id\": 3,\n            \"user_id\": 4\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Comment - Get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/comments/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"comments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{_comment_id}}"
+								}
+							]
+						},
+						"description": "Endpoint untuk melihat komeng by id.\n\nHanya bisa diakses oleh Admin."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/api/comments/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"comments",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{_comment_id}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 03:43:22 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"Anonymous\",\n        \"email\": \"anon@mail.com\",\n        \"subject\": \"Some questions\",\n        \"website\": \"https://example.com\",\n        \"content\": \"Hey, I'm curious about...\",\n        \"created_at\": \"2024-08-30T03:42:37.000000Z\",\n        \"updated_at\": \"2024-08-30T03:42:37.000000Z\",\n        \"blog_id\": 3,\n        \"user_id\": 4\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Comment - Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "content",
+									"value": "Keren banget atmin",
+									"type": "text"
+								},
+								{
+									"key": "_method",
+									"value": "PUT",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/comments/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"comments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{_comment_id}}"
+								}
+							]
+						},
+						"description": "Endpoint untuk memperbarui komen by id.\n\nHanya bisa diakses oleh Admin."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "content",
+											"value": "Keren banget atmin",
+											"type": "text"
+										},
+										{
+											"key": "_method",
+											"value": "PUT",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost/api/comments/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"comments",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{_comment_id}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "localhost"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 30 Aug 2024 03:45:34 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"Anonymous\",\n        \"email\": \"anon@mail.com\",\n        \"subject\": \"Some questions\",\n        \"website\": \"https://example.com\",\n        \"content\": \"Keren banget atmin\",\n        \"created_at\": \"2024-08-30T03:42:37.000000Z\",\n        \"updated_at\": \"2024-08-30T03:45:33.000000Z\",\n        \"blog_id\": 3,\n        \"user_id\": 4\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Comment - Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.unset('_comment_id');"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/comments/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"comments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{_comment_id}}"
+								}
+							]
+						},
+						"description": "Endpoint untuk menghapus komen by id.\n\nHanya bisa diakses oleh Admin."
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
