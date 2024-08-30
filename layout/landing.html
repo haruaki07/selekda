@@ -126,5 +126,19 @@
         2024 &copy; WebtechID | Designed by Misbahul Khoiri
       </div>
     </div>
+    <script>
+      const bannerEl = document.querySelector(".banner");
+      const bannerObs = new IntersectionObserver(callBackFunction);
+      function callBackFunction(entries) {
+        const [entry] = entries;
+        if (entry.isIntersecting) {
+          bannerEl.classList.add("show");
+        } else {
+          bannerEl.classList.remove("show");
+        }
+      }
+
+      bannerObs.observe(bannerEl);
+    </script>
   </body>
 </html>
