@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enum\UserRole;
 use App\Exceptions\InvariantException;
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -39,7 +40,8 @@ class AuthController extends Controller
             "password" => Hash::make($request->password),
             "date_of_birth" => $request->date_of_birth,
             "phone_number" => $request->phone_number,
-            "profile_picture" => $profile_picture
+            "profile_picture" => $profile_picture,
+            "role" => UserRole::User
         ]);
 
         $token = $user->createToken("app")->plainTextToken;

@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\BannerController;
 use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\CaptchaController;
 use App\Http\Controllers\Api\PortfolioController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,10 @@ Route::middleware('json-response')->group(function () {
         ->middleware(['auth:sanctum', 'role:admin']);
 
     Route::resource('portfolios', PortfolioController::class)
+        ->only(["index", "show", "store", "update", "destroy"])
+        ->middleware(['auth:sanctum', 'role:admin']);
+
+    Route::resource('users', UserController::class)
         ->only(["index", "show", "store", "update", "destroy"])
         ->middleware(['auth:sanctum', 'role:admin']);
 });
