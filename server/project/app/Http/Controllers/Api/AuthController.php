@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\InvariantException;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -57,7 +58,7 @@ class AuthController extends Controller
         // validate email and password
         $success = Auth::attempt($data);
         if (!$success) {
-            return abort(401, 'wrong email and password combination!');
+            throw new InvariantException('wrong email and password combination!', 401);
         }
 
         /** @var \App\Models\User */

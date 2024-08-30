@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\InvariantException;
 use Illuminate\Http\Request;
 
 class CaptchaService
@@ -32,13 +33,13 @@ class CaptchaService
   public function verify($captchaString)
   {
     if (!$captchaString) {
-      abort(429, "missing captcha");
+      throw new InvariantException("missing captcha", 429);
     }
 
     // token-answer
     $arr = explode('-', $captchaString);
     if (count($arr) !== 2) {
-      abort(429, "captcha token mismatch");
+      throw new InvariantException("captcha token mismatch", 429);
     }
 
     $token = $arr[0];
@@ -46,21 +47,21 @@ class CaptchaService
 
     $dec = openssl_decrypt($token, 'AES-128-ECB', $this->secret);
     if (!$dec) {
-      abort(429, "captcha token mismatch");
+      throw new InvariantException("captcha token mismatch", 429);
     }
 
     // a.b.expires
     $data = explode('.', $dec);
     if (count($data) !== 3) {
-      abort(429, "captcha token mismatch");
+      throw new InvariantException("captcha token mismatch", 429);
     }
 
     if (time() > $data[2]) {
-      abort(429, "captcha expired");
+      throw new InvariantException("captcha expired", 429);
     }
 
     if ($answer != $data[0] + $data[1]) {
-      abort(429, "wrong captcha answer");
+      throw new InvariantException("wrong captcha answer", 429);
     }
   }
 
