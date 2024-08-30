@@ -81,7 +81,8 @@
 						},
 						{
 							"key": "date_of_birth",
-							"value": "11/02/1999",
+							"value": "1999-07-20",
+							"description": "Y-m-d",
 							"type": "text"
 						},
 						{
@@ -524,6 +525,83 @@
 					],
 					"cookie": [],
 					"body": "{\n    \"error\": {\n        \"code\": 401,\n        \"message\": \"wrong email and password combination!\"\n    }\n}"
+				},
+				{
+					"name": "Auth - Login Admin",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "X_CAPTCHA",
+								"value": "{{_captcha}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "admin@main.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "localhost"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.3.10"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 30 Aug 2024 02:14:40 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"token\": \"6|OYWpDJ79RxQqN6s4KqDzpTApSDDQcOff1axhyVnYc5c37fe4\",\n        \"user\": {\n            \"id\": 4,\n            \"name\": \"Atmin\",\n            \"email\": \"admin@main.com\",\n            \"email_verified_at\": \"2024-08-30T02:08:11.000000Z\",\n            \"created_at\": \"2024-08-30T02:08:11.000000Z\",\n            \"updated_at\": \"2024-08-30T02:08:11.000000Z\",\n            \"date_of_birth\": \"2003-04-26T00:00:00.000000Z\",\n            \"phone_number\": \"+17817412683\",\n            \"profile_picture\": \"https://via.placeholder.com/640x480.png/003355?text=laborum\",\n            \"role\": \"admin\",\n            \"username\": \"atmin\"\n        }\n    }\n}"
 				}
 			]
 		},
@@ -736,6 +814,546 @@
 					"body": "{\n    \"message\": \"success\"\n}"
 				}
 			]
+		},
+		{
+			"name": "Banner - Create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let data = pm.response.json().data;",
+							"pm.environment.set('_banner_id', data.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "Seminar",
+							"type": "text"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "postman-cloud:///1eefd819-4485-4180-a346-7a910a38309b"
+						},
+						{
+							"key": "description",
+							"value": "Join us for an engaging seminar that explores the latest trends in digital innovation.",
+							"type": "text"
+						},
+						{
+							"key": "status",
+							"value": "active",
+							"description": "active/inactive",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/api/banners",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"banners"
+					]
+				},
+				"description": "Endpoint untuk membuat banner.\n\nHanya bisa diakses oleh Admin."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Seminar",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "postman-cloud:///1eefd819-4485-4180-a346-7a910a38309b"
+								},
+								{
+									"key": "description",
+									"value": "Join us for an engaging seminar that explores the latest trends in digital innovation.",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "active",
+									"description": "active/inactive",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/banners",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"banners"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "localhost"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.3.10"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 30 Aug 2024 02:17:33 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"title\": \"Seminar\",\n        \"image_url\": \"uploads/banners/qfdJzYTj7VJYbxc1.jpg\",\n        \"description\": \"Join us for an engaging seminar that explores the latest trends in digital innovation.\",\n        \"status\": \"active\",\n        \"updated_at\": \"2024-08-30T02:17:33.000000Z\",\n        \"created_at\": \"2024-08-30T02:17:33.000000Z\",\n        \"id\": 1\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Banner - List",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/banners",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"banners"
+					]
+				},
+				"description": "Endpoint untuk list semua banner.\n\nHanya bisa diakses oleh Admin."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/banners",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"banners"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "localhost"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.3.10"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 30 Aug 2024 02:19:13 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"title\": \"Seminar\",\n            \"image_url\": \"uploads/banners/qfdJzYTj7VJYbxc1.jpg\",\n            \"description\": \"Join us for an engaging seminar that explores the latest trends in digital innovation.\",\n            \"status\": \"active\",\n            \"created_at\": \"2024-08-30T02:17:33.000000Z\",\n            \"updated_at\": \"2024-08-30T02:17:33.000000Z\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Banner - Get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/banners/:id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"banners",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{_banner_id}}"
+						}
+					]
+				},
+				"description": "Endpoint untuk melihat banner by id.\n\nHanya bisa diakses oleh Admin."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/banners/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"banners",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{_banner_id}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "localhost"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.3.10"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 30 Aug 2024 02:21:42 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"id\": 2,\n        \"title\": \"Seminar\",\n        \"image_url\": \"uploads/banners/j592ZWfMU18lCOVR.jpg\",\n        \"description\": \"Join us for an engaging seminar that explores the latest trends in digital innovation.\",\n        \"status\": \"active\",\n        \"created_at\": \"2024-08-30T02:21:09.000000Z\",\n        \"updated_at\": \"2024-08-30T02:21:09.000000Z\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Banner - Update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "status",
+							"value": "inactive",
+							"type": "text"
+						},
+						{
+							"key": "_method",
+							"value": "PUT",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/api/banners/:id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"banners",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{_banner_id}}"
+						}
+					]
+				},
+				"description": "Endpoint untuk memperbarui banner by id.\n\nHanya bisa diakses oleh Admin."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "status",
+									"value": "inactive",
+									"type": "text"
+								},
+								{
+									"key": "_method",
+									"value": "PUT",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/banners/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"banners",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{_banner_id}}"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "localhost"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.3.10"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 30 Aug 2024 02:26:54 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"id\": 2,\n        \"title\": \"Seminar\",\n        \"image_url\": \"uploads/banners/j592ZWfMU18lCOVR.jpg\",\n        \"description\": \"Join us for an engaging seminar that explores the latest trends in digital innovation.\",\n        \"status\": \"inactive\",\n        \"created_at\": \"2024-08-30T02:21:09.000000Z\",\n        \"updated_at\": \"2024-08-30T02:26:54.000000Z\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Banner - Delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.unset('_banner_id');"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/banners/:id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"banners",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{_banner_id}}"
+						}
+					]
+				},
+				"description": "Endpoint untuk menghapus banner by id.\n\nHanya bisa diakses oleh Admin."
+			},
+			"response": []
 		}
 	]
 }
