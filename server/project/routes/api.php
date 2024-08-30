@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BannerController;
+use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\CaptchaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,10 @@ Route::middleware('json-response')->group(function () {
     });
 
     Route::resource('banners', BannerController::class)
+        ->only(["index", "show", "store", "update", "destroy"])
+        ->middleware(['auth:sanctum', 'role:admin']);
+
+    Route::resource('blogs', BlogController::class)
         ->only(["index", "show", "store", "update", "destroy"])
         ->middleware(['auth:sanctum', 'role:admin']);
 });
