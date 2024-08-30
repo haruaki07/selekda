@@ -1,6 +1,7 @@
 import { Navbar } from "./components/Navbar";
 import { Banner } from "./components/Banner";
 import { Section } from "./components/Section";
+import { Footer } from "./components/Footer";
 
 export default function App() {
   return (
@@ -16,6 +17,8 @@ export default function App() {
           believe in the power of technology to connect and inspire.
         </Section.Description>
       </Section>
+
+      <Footer />
     </>
   );
 }
