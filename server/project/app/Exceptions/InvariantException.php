@@ -26,6 +26,6 @@ class InvariantException extends Exception
                 "code" => $this->code,
                 "message" => $this->message
             ]
-        ]);
+        ], $this->code);
     }
 }

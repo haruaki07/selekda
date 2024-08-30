@@ -33,6 +33,6 @@ return Application::configure(basePath: dirname(__DIR__))
                 "errors" => $e->errors()
             ];
 
-            return response()->json(compact('error'));
+            return response()->json(compact('error'), 400);
         });
     })->create();
