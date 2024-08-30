@@ -1,3 +1,4 @@
+let container = document.querySelector(".game");
 /** @type {HTMLCanvasElement} */
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
@@ -11,6 +12,7 @@ document.querySelector(".game").append(dcanvas);
 
 let scene = "loading";
 let imgs = {};
+let loadingCount = 0;
 
 // loading
 let loadingAlpha = 1;
@@ -28,6 +30,10 @@ function draw() {
     loadingAlpha -= loadingFadeOutSpeed;
     if (loadingAlpha <= 0) {
       loadingAlpha = 0;
+
+      if (container.classList.contains("loading")) {
+        container.classList.remove("loading");
+      }
     }
 
     drawMainBg();
@@ -89,9 +95,10 @@ function drawLoading() {
   // draw loading text
   dctx.textBaseline = "middle";
   dctx.textAlign = "center";
-  dctx.font = "50px Arial";
+  dctx.font = "42px Arial";
   dctx.fillStyle = "#FFFFFF";
-  dctx.fillText("Loading...", canvas.width / 2, canvas.height / 2);
+  let percent = Object.keys(imgs).length + "/" + loadingCount;
+  dctx.fillText(percent + " Loading...", canvas.width / 2, canvas.height / 2);
 
   dcanvas.style.opacity = loadingAlpha;
 }
@@ -106,6 +113,7 @@ function update() {
 }
 
 async function loadImages(...images) {
+  loadingCount = images.length;
   for (const [key, src] of images) {
     await new Promise((resolve, reject) => {
       var img = new Image();
@@ -119,6 +127,7 @@ async function loadImages(...images) {
   }
 }
 
+container.classList.add("loading");
 loadImages(
   ["bg", "assets/background1.jpg"],
   ["bg2", "assets/background2.jpg"],
@@ -141,6 +150,8 @@ loadImages(
   ["fl-ned", "assets/flags/netherlands.png"],
   ["fl-por", "assets/flags/portugal.png"],
   ["fl-esp", "assets/flags/spain.png"]
-).then(() => (scene = "main-menu"));
+).then(() => {
+  scene = "main-menu";
+});
 
 update();

@@ -47,3 +47,55 @@ body {
 #canvas {
   background-color: black;
 }
+
+.game__button,
+.game__player-name {
+  position: absolute;
+  z-index: 999;
+  background-color: var(--color-ijo);
+  color: var(--color-krim);
+  font-size: 14px;
+  border-radius: 999px;
+  padding: 12px 24px;
+  font-weight: bold;
+  pointer-events: none;
+  opacity: 0;
+  transition: 0s opacity;
+}
+
+.game__button {
+  cursor: pointer;
+}
+
+.game__player-name {
+  top: 24px;
+  left: 72px;
+}
+
+.game__button-history {
+  top: 24px;
+  right: 72px;
+}
+
+.game__button-play {
+  top: 40%;
+  left: 50%;
+  font-size: 20px;
+  background-color: var(--color-ijo-dark);
+  transform: translate(-50%, -40%);
+}
+
+.game__button-help {
+  --top: calc(40% + 47px);
+  top: var(--top);
+  left: 50%;
+  font-size: 20px;
+  background-color: var(--color-ijo-dark);
+  transform: translate(-50%);
+}
+
+.game:not(.loading) *:not(canvas) {
+  transition: 150ms;
+  pointer-events: unset;
+  opacity: 1;
+}
