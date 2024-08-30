@@ -1,0 +1,741 @@
+{
+	"info": {
+		"_postman_id": "1738865a-05a3-45d2-8471-d63d2ddf89de",
+		"name": "WebtechID API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18194117"
+	},
+	"item": [
+		{
+			"name": "Auth - Register",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"try {",
+							"    const response = await pm.sendRequest({",
+							"        url: pm.environment.get(\"base_url\") + \"/api/captcha\",",
+							"        method: \"GET\"",
+							"    });",
+							"",
+							"    let data = response.json().data;",
+							"    let answer = eval(data.challenge);",
+							"",
+							"    pm.environment.set(\"_captcha\", `${data.token}-${answer}`);",
+							"} catch (err) {",
+							"    console.error(err);",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let data = pm.response.json().data;",
+							"pm.environment.set('_token', data.token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "X_CAPTCHA",
+						"value": "{{_captcha}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Agus",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "agus@mail.com",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "agus",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "AgusLapar123",
+							"type": "text"
+						},
+						{
+							"key": "date_of_birth",
+							"value": "11/02/1999",
+							"type": "text"
+						},
+						{
+							"key": "phone_number",
+							"value": "088",
+							"type": "text"
+						},
+						{
+							"key": "profile_picture",
+							"type": "file",
+							"src": "postman-cloud:///1ef665fd-d497-45c0-9ae4-283274e307fd"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/api/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"register"
+					]
+				},
+				"description": "Endpoint untuk daftar akun.\n\nMembutuhkan captcha di header `X_CAPTCHA` atau pada body dengan field `_captcha`."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "X_CAPTCHA",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Agus",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "agus@mail.com",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "agus",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "AgusLapar123",
+									"type": "text"
+								},
+								{
+									"key": "date_of_birth",
+									"value": "11/01/09",
+									"type": "text"
+								},
+								{
+									"key": "profile_picture",
+									"type": "file",
+									"src": "postman-cloud:///1ef665fd-d497-45c0-9ae4-283274e307fd"
+								},
+								{
+									"key": "phone_number",
+									"value": "089",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/api/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "localhost"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.3.10"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 30 Aug 2024 00:02:17 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"token\": \"4|BOkgex14FE8KTywn0MlivPBXAG1jdHsptAFs9GHLd080e1c3\",\n        \"user\": {\n            \"name\": \"Agus\",\n            \"username\": \"agus\",\n            \"email\": \"agus@mail.com\",\n            \"date_of_birth\": \"2009-11-01T00:00:00.000000Z\",\n            \"phone_number\": \"089\",\n            \"profile_picture\": \"uploads/pp/9Mg9GVNykagZI6Kg.png\",\n            \"updated_at\": \"2024-08-30T00:02:17.000000Z\",\n            \"created_at\": \"2024-08-30T00:02:17.000000Z\",\n            \"id\": 2\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Auth - Login",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"try {",
+							"    const response = await pm.sendRequest({",
+							"        url: pm.environment.get(\"base_url\") + \"/api/captcha\",",
+							"        method: \"GET\"",
+							"    });",
+							"",
+							"    let data = response.json().data;",
+							"    let answer = eval(data.challenge);",
+							"",
+							"    pm.environment.set(\"_captcha\", `${data.token}-${answer}`);",
+							"} catch (err) {",
+							"    console.error(err);",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let data = pm.response.json().data;",
+							"pm.environment.set('_token', data.token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "X_CAPTCHA",
+						"value": "{{_captcha}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "agus@mail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "AgusLapar123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/api/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				},
+				"description": "Endpoint untuk daftar akun.\n\nTerdapat token pada body (`token`) untuk token autentikasi.\n\nMembutuhkan captcha di header `X_CAPTCHA` atau pada body dengan field `_captcha`."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "X_CAPTCHA",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "agus@mail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "AgusLapar123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/api/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "localhost"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.3.10"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 30 Aug 2024 00:03:48 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"token\": \"5|0lTDqkp5HZ1JMylEB8YSMVTpaYot0Oi14Xe8ua8v8505dc35\",\n        \"user\": {\n            \"id\": 2,\n            \"name\": \"Agus\",\n            \"email\": \"agus@mail.com\",\n            \"email_verified_at\": null,\n            \"created_at\": \"2024-08-30T00:02:17.000000Z\",\n            \"updated_at\": \"2024-08-30T00:02:17.000000Z\",\n            \"date_of_birth\": \"2009-11-01T00:00:00.000000Z\",\n            \"phone_number\": \"089\",\n            \"profile_picture\": \"uploads/pp/9Mg9GVNykagZI6Kg.png\",\n            \"role\": \"user\",\n            \"username\": \"agus\"\n        }\n    }\n}"
+				},
+				{
+					"name": "Failed - Validation",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "X_CAPTCHA",
+								"value": "{{_captcha}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "agus@mail.com",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "AgusLapar123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "localhost"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.3.10"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 30 Aug 2024 01:03:41 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": {\n        \"code\": 400,\n        \"reason\": \"ValidationError\",\n        \"message\": \"The email field is required.\",\n        \"errors\": {\n            \"email\": [\n                \"The email field is required.\"\n            ]\n        }\n    }\n}"
+				},
+				{
+					"name": "Failed - Wrong Credentials",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "X_CAPTCHA",
+								"value": "{{_captcha}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "agus@mail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "AgusLapar1231",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "localhost"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.3.10"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 30 Aug 2024 01:03:54 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": {\n        \"code\": 401,\n        \"message\": \"wrong email and password combination!\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Auth - Logout",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/logout",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Captcha - Generate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let data = pm.response.json().data;",
+							"let answer = eval(data.challenge);",
+							"pm.environment.set(\"_captcha\", `${data.token}-${answer}`);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/captcha",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"captcha"
+					]
+				},
+				"description": "Endpoint untuk generate captcha. Captcha adalah pertambahan sederhana dari angka 0-20 secara acak."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/api/captcha",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"captcha"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "localhost"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.3.10"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 29 Aug 2024 23:59:48 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"token\": \"JhYXviCfvxP8U3fiEA7buw==\",\n        \"challenge\": \"19 + 4\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Captcha - Validate",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X_CAPTCHA",
+						"value": "{{_captcha}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/captcha",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"captcha"
+					]
+				},
+				"description": "Endpoint untuk validasi captcha. Token dan challenge harus didapatkan terlebih dulu dari GET /api/captcha, seletah itu include header X_CAPTCHA dengan format `{token}-{answer}`. Atau bisa juga dimasukkan pada body dengan nama field `_captcha`."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X_CAPTCHA",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost/api/captcha",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"captcha"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "localhost"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.3.10"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 30 Aug 2024 00:00:32 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"success\"\n}"
+				}
+			]
+		}
+	]
+}
