@@ -101,3 +101,21 @@
 .banner__text-description {
   font-size: 18px;
 }
+
+.section {
+  background-color: var(--color-background);
+  padding: 40px;
+  text-align: center;
+}
+
+.section__title {
+  color: var(--color-red);
+  font-size: 32px;
+  margin-bottom: 24px;
+}
+
+.section__description {
+  max-width: 768px;
+  margin: auto;
+  line-height: 1.25;
+}
