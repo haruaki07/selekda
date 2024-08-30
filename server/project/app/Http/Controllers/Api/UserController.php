@@ -102,11 +102,11 @@ class UserController extends Controller
             $values["profile_pricture"] = $profile_picture;
         }
 
-        if ($request?->username !== $user->username) {
+        if ($request->has('username') && $request->username !== $user->username) {
             $values["username"] = $request->username;
         }
 
-        if ($request?->email !== $user->email) {
+        if ($request->has('email') && $request->email !== $user->email) {
             $values["email"] = $request->email;
         }
 
