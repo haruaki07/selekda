@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BannerController;
 use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\CaptchaController;
+use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\PortfolioController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -40,4 +41,8 @@ Route::middleware('json-response')->group(function () {
     Route::resource('users', UserController::class)
         ->only(["index", "show", "store", "update", "destroy"])
         ->middleware(['auth:sanctum', 'role:admin']);
+
+    Route::resource('comments', CommentController::class)
+        ->only(["index", "show", "store", "update", "destroy"])
+        ->middleware(['auth:sanctum']);
 });
