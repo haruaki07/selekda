@@ -9,7 +9,7 @@ let dctx = dcanvas.getContext("2d");
 
 document.querySelector(".game").append(dcanvas);
 
-let scenee = "loading";
+let scene = "loading";
 let imgs = {};
 
 // loading
@@ -23,7 +23,7 @@ function draw() {
     drawLoading();
   }
 
-  if (scenee === "main-menu") {
+  if (scene === "main-menu") {
     // fade out the loading scene
     loadingAlpha -= loadingFadeOutSpeed;
     if (loadingAlpha <= 0) {
@@ -31,6 +31,49 @@ function draw() {
     }
 
     drawMainBg();
+    drawFlags(
+      Object.keys(imgs)
+        .filter((k) => k.startsWith("fl-"))
+        .map((k) => imgs[k])
+    );
+    drawGoalSides();
+  }
+}
+
+function drawGoalSides() {
+  // left
+  let limg = imgs.lgoal;
+  let ratio = limg.width / limg.height;
+  let w = 100;
+  let h = w / ratio;
+  ctx.drawImage(limg, 40, 322, w, h);
+
+  // right
+  let rimg = imgs.rgoal;
+  let rratio = rimg.width / rimg.height;
+  let rw = 100;
+  let rh = rw / rratio;
+  ctx.drawImage(rimg, canvas.width - rw - 45, 322, rw, rh);
+}
+
+function drawFlags(flags) {
+  let flw = 90;
+  let fx = 0;
+
+  // draw flags
+  flags.forEach((fl) => {
+    ctx.drawImage(fl, fx, 380, flw, 60);
+    fx += 90;
+  });
+
+  // draw empty space
+  if (fx < canvas.width) {
+    let n = Math.ceil((canvas.width - fx) / flw);
+
+    for (let i = 0; i < n; i++) {
+      ctx.drawImage(flags[i % flags.length], fx, 380, flw, 60);
+      fx += 90;
+    }
   }
 }
 
@@ -76,6 +119,28 @@ async function loadImages(...images) {
   }
 }
 
-loadImages(["bg", "assets/background1.jpg"]).then(() => (scenee = "main-menu"));
+loadImages(
+  ["bg", "assets/background1.jpg"],
+  ["bg2", "assets/background2.jpg"],
+  ["lgoal", "assets/lgoal.png"],
+  ["rgoal", "assets/rgoal.png"],
+  ["ball1", "assets/ball1.png"],
+  ["ball2", "assets/ball2.png"],
+
+  // items
+  ["it-decrease-ball", "assets/decrease-ball.png"],
+  ["it-diamond-ice", "assets/diamond-ice.png"],
+  ["it-increase-ball", "assets/increase-ball.png"],
+
+  // flags
+  ["fl-bra", "assets/flags/brazil.png"],
+  ["fl-eng", "assets/flags/england.png"],
+  ["fl-ger", "assets/flags/germany.png"],
+  ["fl-ita", "assets/flags/italy.png"],
+  ["fl-jpn", "assets/flags/japan.png"],
+  ["fl-ned", "assets/flags/netherlands.png"],
+  ["fl-por", "assets/flags/portugal.png"],
+  ["fl-esp", "assets/flags/spain.png"]
+).then(() => (scene = "main-menu"));
 
 update();
