@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -77,5 +76,36 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->noContent();
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            "name" => "string|max:100",
+            "username" => "string|max:15|unique:users,email",
+            "password" => [Password::min(6)->letters()->mixedCase()->numbers()],
+            "date_of_birth" => "date",
+            "phone_number" => "string|max:13",
+            "profile_picture" => "image"
+        ]);
+
+        $values = $request->except(['username']);
+
+        $user = $request->user();
+
+        if ($request->hasFile('profile_picture')) {
+            $pp = $request->file('profile_picture');
+            $filename = Str::random() . "." . $pp->extension();
+            $profile_picture = Storage::disk('public')->putFileAs('uploads/pp', $pp, $filename);
+            $values["profile_pricture"] = $profile_picture;
+        }
+
+        if ($request->has('username') && $request->username !== $user->username) {
+            $values["username"] = $request->username;
+        }
+
+        $user->update($values);
+
+        return response()->json(["data" => $user]);
     }
 }

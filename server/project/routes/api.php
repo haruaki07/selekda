@@ -11,11 +11,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('json-response')->group(function () {
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    })->middleware('auth:sanctum');
-
     Route::as('auth.')->group(function () {
+        Route::get('/user', function (Request $request) {
+            return $request->user();
+        })->middleware('auth:sanctum')->name('profile');
+        Route::put('/user', [AuthController::class, 'updateProfile'])->middleware('auth:sanctum')->name('profile-update');
         Route::post('/register', [AuthController::class, 'register'])->middleware('captcha')->name('register');
         Route::post('/login', [AuthController::class, 'login'])->middleware('captcha')->name('login');
         Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
