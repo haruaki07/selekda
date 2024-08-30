@@ -1,0 +1,34 @@
+.navbar {
+  width: 100%;
+}
+
+.navbar__wrapper {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar__brand-img {
+  width: 100px;
+}
+
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navbar__link-item {
+  color: var(--color-foreground);
+  text-decoration: none;
+}
+
+.navbar__link-item:hover {
+  color: var(--color-red);
+}
+
+.navbar__link-item--active {
+  color: var(--color-red);
+}
