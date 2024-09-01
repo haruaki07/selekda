@@ -218,6 +218,111 @@ class ImportTool extends Tool {
   }
 }
 
+class BucketTool extends Tool {
+  /**
+   *
+   * @param {CanvasRenderingContext2D} ctx
+   * @param {CanvasRenderingContext2D} dctx
+   */
+  constructor(ctx, color = [0, 0, 0], tolerance = 40) {
+    super("bucket");
+    this.ctx = ctx;
+    this.color = color;
+    this.tolerance = tolerance;
+  }
+
+  draw(x, y) {
+    const cw = this.ctx.canvas.width;
+    const ch = this.ctx.canvas.height;
+    const imageData = this.ctx.getImageData(0, 0, cw, this.ctx.canvas.height);
+
+    const prevColor = this._getPixelColor(imageData, x, y);
+    if (prevColor === this.color) return;
+
+    const q = [];
+
+    q.push({ x, y });
+    this._fillPixelColor(imageData, x, y, this.color);
+
+    while (q.length > 0) {
+      let { x, y } = q.shift();
+
+      // check if the adjacent pixels are valid and enqueue
+      // right
+      if (
+        x + 1 < cw &&
+        this._colorIsEqual(this._getPixelColor(imageData, x + 1, y), prevColor)
+      ) {
+        this._fillPixelColor(imageData, x + 1, y, this.color);
+        q.push({ x: x + 1, y });
+      }
+      // left
+      if (
+        x - 1 >= 0 &&
+        this._colorIsEqual(this._getPixelColor(imageData, x - 1, y), prevColor)
+      ) {
+        this._fillPixelColor(imageData, x - 1, y, this.color);
+        q.push({ x: x - 1, y });
+      }
+      // bottom
+      if (
+        y + 1 < ch &&
+        this._colorIsEqual(this._getPixelColor(imageData, x, y + 1), prevColor)
+      ) {
+        this._fillPixelColor(imageData, x, y + 1, this.color);
+        q.push({ x, y: y + 1 });
+      }
+      // top
+      if (
+        y - 1 >= 0 &&
+        this._colorIsEqual(this._getPixelColor(imageData, x, y - 1), prevColor)
+      ) {
+        this._fillPixelColor(imageData, x, y - 1, this.color);
+        q.push({ x, y: y - 1 });
+      }
+    }
+
+    this.ctx.putImageData(imageData, 0, 0);
+  }
+
+  _getPixelColor(imageData, x, y) {
+    // 4 is r,g,b,a for each pixel, imageData.data is one-dimensional
+    const pos = (y * this.ctx.canvas.width + x) * 4;
+
+    let r = imageData.data[pos + 0];
+    let g = imageData.data[pos + 1];
+    let b = imageData.data[pos + 2];
+
+    return [r, g, b];
+  }
+
+  setColor(hex) {
+    const r = parseInt(hex.substring(1, 3), 16);
+    const g = parseInt(hex.substring(3, 5), 16);
+    const b = parseInt(hex.substring(5, 7), 16);
+
+    this.color = [r, g, b];
+  }
+
+  _colorIsEqual(a, b) {
+    let dif = Math.max(
+      // get the max channel differance;
+      Math.abs(a[0] - b[0]),
+      Math.abs(a[1] - b[1]),
+      Math.abs(a[2] - b[2])
+    );
+    return dif < this.tolerance;
+  }
+
+  _fillPixelColor(imageData, x, y, color) {
+    const pos = (y * this.ctx.canvas.width + x) * 4;
+
+    imageData.data[pos + 0] = color[0];
+    imageData.data[pos + 1] = color[1];
+    imageData.data[pos + 2] = color[2];
+  }
+}
+
 class Stack {
   constructor(cb) {
     this.stack = [];
@@ -298,6 +403,30 @@ class Editor {
     this.initPickerTool();
     this.initShapeTool();
     this.initImportTool();
+    this.initBucketTool();
+  }
+
+  initBucketTool() {
+    this.bucketTool = new BucketTool(this.ctx, this.dctx);
+
+    // color props dom
+    document.getElementById("bucketColor").value = this.shapeTool.color;
+    document.getElementById("bucketColor").addEventListener("change", (e) => {
+      this.bucketTool.setColor(e.currentTarget.value);
+    });
+
+    // tolerance props dom
+    document.getElementById("bucketTolerance").value =
+      this.bucketTool.tolerance;
+    document.getElementById("bucketToleranceText").innerText =
+      this.bucketTool.tolerance;
+    document
+      .getElementById("bucketTolerance")
+      .addEventListener("input", (e) => {
+        let value = e.currentTarget.value;
+        this.bucketTool.tolerance = value;
+        document.getElementById("bucketToleranceText").innerText = value;
+      });
   }
 
   initImportTool() {
@@ -449,6 +578,8 @@ class Editor {
       this.shapeTool.beginDraw(x, y);
     } else if (this.activeTool === "import") {
       this.importTool.beginDraw(x, y);
+    } else if (this.activeTool === "bucket") {
+      this.bucketTool.draw(x, y);
     }
   };
 
@@ -531,12 +662,8 @@ class Editor {
   getMousePos(e) {
     let rect = this.canvas.getBoundingClientRect();
 
-    // get the scale factor
-    const scaleX = this.canvas.width / rect.width;
-    const scaleY = this.canvas.height / rect.height;
-
-    let x = (e.clientX - rect.left) * scaleX;
-    let y = (e.clientY - rect.top) * scaleY;
+    let x = parseInt((e.clientX - rect.left) / this.zoom);
+    let y = parseInt((e.clientY - rect.top) / this.zoom);
 
     return { x, y };
   }

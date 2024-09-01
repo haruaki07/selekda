@@ -268,6 +268,28 @@
             </div>
           </div>
 
+          <!-- bucket tool props -->
+          <div
+            class="workspace__tool-props"
+            id="bucketProps"
+            style="display: none !important"
+          >
+            <div class="workspace__tool-prop">
+              <label>
+                color:
+                <input type="color" name="bucket-color" id="bucketColor" />
+              </label>
+            </div>
+
+            <div class="workspace__tool-prop">
+              <label>
+                tolerance:
+                <input type="range" min="0" max="255" id="bucketTolerance" />
+                <span id="bucketToleranceText"></span>
+              </label>
+            </div>
+          </div>
+
           <div class="workspace__editor"></div>
           <div class="workspace__content-statusbar">
             <div>size: <span id="statusSize"></span></div>
