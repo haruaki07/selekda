@@ -825,6 +825,10 @@ class Editor {
       .getElementById(tool + "Props")
       ?.style.setProperty("display", "flex");
   }
+
+  destroy() {
+    document.querySelector(".workspace__editor").innerHTML = "";
+  }
 }
 
 function rgbToHex(r, g, b) {
@@ -839,16 +843,25 @@ function rgbToHex(r, g, b) {
   return `#${hexR}${hexG}${hexB}`;
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => {
-    document.querySelector(".splash").style.opacity = "0";
-    setTimeout(() => {
-      document.querySelector(".splash").remove();
-    }, 250);
-  }, 1000);
-});
+function hideSplash() {
+  setTimeout(
+    () => {
+      document.querySelector(".splash").style.opacity = "0";
+      setTimeout(() => {
+        document.querySelector(".splash").remove();
+      }, 250);
+    },
+    config.dev ? 0 : 1000
+  );
+}
 
 let width, height, editor;
+
+function createEditor() {
+  editor = new Editor(width, height);
+  editor.setActiveTool("brush");
+  document.getElementById("newDialog").style.display = "none";
+}
 
 document.getElementById("createNew").addEventListener("click", (e) => {
   let w = document.getElementById("newWidth").value;
@@ -867,14 +880,14 @@ document.getElementById("createNew").addEventListener("click", (e) => {
   if (editor) {
     let ok = confirm("Are you sure? this action cannot undone.");
     if (!ok) return;
+
+    editor.destroy();
   }
 
   width = w;
   height = h;
 
-  editor = new Editor(width, height);
-  editor.setActiveTool("brush");
-  document.getElementById("newDialog").style.display = "none";
+  createEditor();
 });
 
 document.getElementById("cancelCreate").addEventListener("click", (e) => {
@@ -883,4 +896,14 @@ document.getElementById("cancelCreate").addEventListener("click", (e) => {
 
 document.getElementById("new").addEventListener("click", (e) => {
   document.getElementById("newDialog").style.display = "block";
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  hideSplash();
+
+  if (config.dev) {
+    width = 1024;
+    height = 600;
+    createEditor();
+  }
 });
